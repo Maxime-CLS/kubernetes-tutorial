@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Débutant on Kubernetes Tutoriel</title><link>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/d%C3%A9butant/</link><description>Recent content in Débutant on Kubernetes Tutoriel</description><generator>Hugo -- gohugo.io</generator><language>fr-FR</language><lastBuildDate>Mon, 04 May 2020 08:52:59 +0200</lastBuildDate><atom:link href="https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/d%C3%A9butant/index.xml" rel="self" type="application/rss+xml"/><item><title>Kubectl</title><link>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/d%C3%A9butant/kubectl/</link><pubDate>Fri, 26 Jun 2020 15:17:20 +0200</pubDate><guid>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/d%C3%A9butant/kubectl/</guid><description>Prérequis Minikube Install Driver none kubectl Install Stern Docs Release jq Install 3 terminal SSH Parlez à votre Cluster echo $KUBECONFIG
+kubectl config view
+Affiche les paramètres fusionnés de kubeconfig
+Vue du noeud kubectl get nodes
+kubectl get nodes --show-labels
+kubectl get namespaces
+Affiche tous les noeuds, les labels définit et les espaces de noms.
+Voir les Pods prêts à l&amp;rsquo;emploi Votre fournisseur de Kubernetes comprend probablement de nombreuses espaces de noms prêtes à l&amp;rsquo;emploi :</description></item><item><title>Pod, Replicaset, Deployment</title><link>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/d%C3%A9butant/pod-replica-deployment/</link><pubDate>Fri, 26 Jun 2020 15:17:20 +0200</pubDate><guid>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/d%C3%A9butant/pod-replica-deployment/</guid><description>Prérequis Minikube Install Driver none kubectl Install Stern Docs Release jq Install 3 terminal SSH Commencez par créer un espace de noms dans lequel vous pourrez travailler :
+kubectl create namespace myspace
+kubectl config set-context --current --namespace=myspace
+Pod Créer un naked pod :
+Observez le cycle de vie du pod :
+terminal 2 :
+watch kubectl get pods
+NAME READY STATUS RESTARTS AGE
+quarkus-demo 0/1 ContainerCreating 0 10s
+De la création de conteneurs à l&amp;rsquo;exécution avec Ready 1/1 :</description></item><item><title>Service</title><link>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/d%C3%A9butant/services/</link><pubDate>Fri, 26 Jun 2020 15:17:20 +0200</pubDate><guid>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/d%C3%A9butant/services/</guid><description>Prérequis Minikube Install Driver none kubectl Install Stern Docs Release jq Install 3 terminal SSH Cela fait suite à la création du déploiement dans le chapitre précédent.
+Assurez-vous que vous êtes dans le bon espace de noms :
+kubectl config set-context --current --namespace=myspace
+Assurez-vous que vous avez le Déploiement :
+kubectl get deployments
+NAME READY UP-TO-DATE AVAILABLE AGE
+quarkus-demo-deployment 3/3 3 3 8m33s
+Assurez-vous que vous avez un RS :</description></item><item><title>Logs</title><link>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/d%C3%A9butant/logs/</link><pubDate>Fri, 26 Jun 2020 15:17:20 +0200</pubDate><guid>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/d%C3%A9butant/logs/</guid><description>Prérequis Minikube Install Driver none kubectl Install Stern Docs Release jq Install 3 terminal SSH Il existe plusieurs façons &amp;ldquo;prêtes à la production&amp;rdquo; de collecter et de visualiser les messages de logs dans un cluster Kubernetes. Beaucoup de gens aiment certaines fonctionnalités de ELK (ElasticSearch, Logstash, Kibana) ou EFK (ElasticSearch, FluentD, Kibana).
+L&amp;rsquo;accent est mis ici sur les éléments auxquels un développeur doit avoir accès pour l&amp;rsquo;aider à comprendre le comportement de son application s&amp;rsquo;exécutant à l&amp;rsquo;intérieur d&amp;rsquo;un pod.</description></item><item><title>Service Magic</title><link>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/d%C3%A9butant/servicemagic/</link><pubDate>Fri, 26 Jun 2020 15:17:20 +0200</pubDate><guid>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/d%C3%A9butant/servicemagic/</guid><description>Prérequis Minikube Install Driver none kubectl Install Stern Docs Release jq Install 3 terminal SSH Créer un namespace
+kubectl create namespace funstuff
+kubectl config set-context --current --namespace=funstuff
+Deployer une application mypython
+cat &amp;lt;&amp;lt;EOF | kubectl apply -f -
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+name: mypython-deployment
+spec:
+replicas: 1
+selector:
+matchLabels:
+app: mypython
+template:
+metadata:
+labels:
+app: mypython
+spec:
+containers:
+- name: mypython
+image: quay.io/rhdevelopers/mypython:v1
+ports:
+- containerPort: 8000
+EOF
+Deployer une application mygo</description></item><item><title>Déploiement Blue/Green</title><link>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/d%C3%A9butant/blue-green/</link><pubDate>Fri, 26 Jun 2020 15:17:20 +0200</pubDate><guid>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/d%C3%A9butant/blue-green/</guid><description>Prérequis Minikube Install Driver none kubectl Install Stern Docs Release jq Install 3 terminal SSH Créer un namespace
+kubectl create namespace myspace
+kubectl config set-context --current --namespace=myspace
+Vérifier que le namespace est vide
+kubectl get all
+No resources found in myspace namespace.
+Créer un fichier de déploiement
+mkdir -p apps/kubefiles/
+vi apps/kubefiles/myboot-deployment-resources-limits.yml
+myboot-deployment-resources-limits.yml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+labels:
+app: myboot
+name: myboot
+spec:
+replicas: 1
+selector:
+matchLabels:
+app: myboot
+template:
+metadata:
+labels:
+app: myboot
+spec:
+containers:
+- name: myboot
+image: quay.</description></item></channel></rss>
