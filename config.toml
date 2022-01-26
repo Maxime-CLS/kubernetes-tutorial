@@ -1,8 +1,8 @@
 baseURL = "https://maxime-cls.github.io/kubernetes-tutorial/"
-languageName = "Français"
-languageCode = "fr-FR"
 title = "Kubernetes Tutoriel"
 theme = "hugo-theme-learn"
+languageCode = "fr-FR"
+languageName = "Français"
 
 [params]
 themeVariant = "blue"
@@ -10,7 +10,7 @@ author = "Maxime Calves"
 description = "Tutoriel sur Kubernetes"
 showVisitedLinks = true
 disableSearch = false
-
+disableLandingPageButton = true
 
 [outputs]
 home = ["HTML", "RSS", "JSON"]

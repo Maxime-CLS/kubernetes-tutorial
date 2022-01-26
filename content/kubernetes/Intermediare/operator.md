@@ -309,7 +309,6 @@ vim apps/pizzas/meat-lovers.yaml
 ```
 
 meat-lovers.yaml
-```
 
 ```
 apiVersion: mykubernetes.acme.org/v1
@@ -323,10 +322,6 @@ spec:
   - sausage
   - bacon
   sauce: extra
-```
-
-```
-vim apps/pizzas/veggie-lovers.yaml
 ```
 
 ```
