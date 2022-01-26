@@ -130,7 +130,7 @@ kubectl apply -f apps/kubefiles/myboot-service.yml
 Créer les variables d'environnement IP et Port
 
 ```
-IP=$(minikube ip -p devnation)
+IP=$(minikube ip)
 PORT=$(kubectl get service/myboot -o jsonpath="{.spec.ports[*].nodePort}")
 ```
 

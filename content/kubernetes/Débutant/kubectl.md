@@ -13,6 +13,17 @@ weight: 5
 - jq [Install](https://stedolan.github.io/jq/download/)
 - 3 terminal SSH
 
+### Démarrer le cluster Kubernetes
+
+```
+sudo minikube start --driver=none --kubernetes-version=v1.22.2
+```
+Avec un proxy :
+
+```
+minikube start --docker-env HTTPS_PROXY=$HTTPS_PROXY --docker-env HTTP_PROXY=$HTTP_PROXY --docker-env=NO_PROXY=$NO_PROXY --kubernetes-version=v1.22.2
+```
+
 
 ### Parlez à votre Cluster
 
@@ -200,6 +211,12 @@ Scalez l'application
 terminal 2
 ```
 watch kubectl get pods
+```
+
+terminal 3
+
+```
+sudo minikube tunnel
 ```
 
 terminal 1 

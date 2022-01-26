@@ -166,7 +166,7 @@ jq: error (at <stdin>:18): Cannot iterate over null (null)
 Définir les variables IP et PORT
 
 ```
-IP=$(minikube ip -p devnation)
+IP=$(minikube ip)
 PORT=$(kubectl get service/my-service -o jsonpath="{.spec.ports[*].nodePort}")
 ```
 

@@ -24,6 +24,19 @@ kubectl config set-context --current --namespace=myspace
 
 Créer un [naked pod](https://kubernetes.io/docs/concepts/configuration/overview/#naked-pods-vs-replicasets-deployments-and-jobs) :
 
+```
+cat <<EOF | kubectl apply -f -
+apiVersion: v1
+kind: Pod
+metadata:
+  name: quarkus-demo
+spec:
+  containers:
+  - name: quarkus-demo
+    image: quay.io/rhdevelopers/quarkus-demo:v1
+EOF
+```
+
 Observez le cycle de vie du pod :
 
 terminal 2 :
