@@ -1,0 +1,237 @@
+---
+title: "Déploiement Blue/Green"
+date: 2020-06-26T15:17:20+02:00
+draft: false
+weight: 30
+---
+
+## Prérequis
+
+- Minikube [Install](https://kubernetes.io/fr/docs/tasks/tools/install-minikube/#installez-minikube-par-t%C3%A9l%C3%A9chargement-direct)  [Driver none](https://kubernetes.io/docs/setup/learning-environment/minikube/#specifying-the-vm-driver)
+- kubectl [Install](https://kubernetes.io/fr/docs/tasks/tools/install-kubectl/)
+- Stern [Docs](https://kubernetes.io/blog/2016/10/tail-kubernetes-with-stern/) [Release](https://github.com/wercker/stern/releases)
+- jq [Install](https://stedolan.github.io/jq/download/)
+- 3 terminal SSH
+
+
+Créer un namespace
+
+
+```
+kubectl create namespace myspace
+kubectl config set-context --current --namespace=myspace
+```
+
+
+Vérifier que le namespace est vide
+
+
+```
+kubectl get all
+```
+
+```
+No resources found in myspace namespace.
+```
+
+Créer un fichier de déploiement
+
+
+```
+mkdir -p apps/kubefiles/
+vi apps/kubefiles/myboot-deployment-resources-limits.yml
+```
+
+myboot-deployment-resources-limits.yml
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: myboot
+  name: myboot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myboot
+  template:
+    metadata:
+      labels:
+        app: myboot
+    spec:
+      containers:
+      - name: myboot
+        image: quay.io/rhdevelopers/myboot:v1
+        ports:
+          - containerPort: 8080
+        resources:
+          requests:
+            memory: "300Mi"
+            cpu: "250m" # 1/4 core
+          # NOTE: These are the same limits we tested our Docker Container with earlier
+          # -m matches limits.memory and --cpus matches limits.cpu
+          limits:
+            memory: "400Mi"
+            cpu: "1000m" # 1 core
+```
+
+
+Déployer la version 1 de l'applciation myboot
+
+```
+kubectl apply -f apps/kubefiles/myboot-deployment-resources-limits.yml
+```
+
+Scale l'application avec 2 replicas
+
+```
+kubectl scale deployment/myboot --replicas=2
+```
+
+Vérifier l'état de l'application
+
+```
+watch kubectl get pods --show-labels
+```
+
+Créer un fichier pour votre service
+
+
+```
+vi apps/kubefiles/myboot-service.yml
+```
+
+myboot-service.yml
+
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: myboot
+  labels:
+    app: myboot
+spec:
+  ports:
+  - name: http
+    port: 8080
+  selector:
+    app: myboot
+  type: LoadBalancer
+```
+
+Déployer le service
+
+```
+kubectl apply -f apps/kubefiles/myboot-service.yml
+```
+
+Créer les variables d'environnement IP et Port
+
+```
+IP=$(minikube ip -p devnation)
+PORT=$(kubectl get service/myboot -o jsonpath="{.spec.ports[*].nodePort}")
+```
+
+
+Réaliser une requete du service
+
+```
+curl $IP:$PORT
+```
+
+Et maintenant créer une boucle de requete
+
+```
+while true
+do curl $IP:$PORT
+sleep .3
+done
+```
+
+Créer un fichier de déploiement pour la version 2
+
+
+```
+vi apps/kubefiles/myboot-deployment-resources-limits-v2.yml
+```
+
+myboot-deployment-resources-limits-v2.yml
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: myboot-next
+  name: myboot-next-5
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myboot-next
+  template:
+    metadata:
+      labels:
+        app: myboot-next
+    spec:
+      containers:
+      - name: myboot
+        image: quay.io/rhdevelopers/myboot:v3
+        ports:
+          - containerPort: 8080
+        resources:
+          requests:
+            memory: "300000Mi"
+            cpu: "250m" # 1/4 core
+          limits:
+            memory: "900000Mi"
+            cpu: "1000m" # 1 core
+```
+
+Vérifiez que le nouveau pod/déploiement porte le nouveau code :
+
+```
+PODNAME=$(kubectl get pod -l app=myboot-next -o name)
+kubectl exec -it $PODNAME -- curl localhost:8080
+```
+
+```
+Bonjour from Spring Boot! 1 on myboot-next-66b68c6659-ftcjr
+```
+
+Maintenant, mettez à jour le service unique pour pointer vers le nouveau pod et passez au Green :
+
+```
+kubectl patch svc/myboot -p '{"spec":{"selector":{"app":"myboot-next"}}}'
+```
+
+```
+Aloha from Spring Boot! 240 on myboot-d78fb6d58-929wn
+Bonjour from Spring Boot! 2 on myboot-next-66b68c6659-ftcjr
+Bonjour from Spring Boot! 3 on myboot-next-66b68c6659-ftcjr
+Bonjour from Spring Boot! 4 on myboot-next-66b68c6659-ftcjr
+```
+
+Vous déterminez que vous préférez l'hawaïen (bleu) au français (vert) et faites un rollback :
+
+Mettez maintenant à jour le service unique pour pointer vers le nouveau pod et passez en Bleu :
+
+```
+kubectl patch svc/myboot -p '{"spec":{"selector":{"app":"myboot"}}}'
+```
+
+```
+Bonjour from Spring Boot! 17 on myboot-next-66b68c6659-ftcjr
+Aloha from Spring Boot! 257 on myboot-d78fb6d58-vqvlb
+Aloha from Spring Boot! 258 on myboot-d78fb6d58-vqvlb
+```
+
+Supprimer les ressources
+
+```
+kubectl delete service myboot
+kubectl delete deployment myboot
+kubectl delete deployment myboot-next
+```
