@@ -2,23 +2,23 @@
 <head>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=generator content="Hugo 0.92.0">
+<meta name=generator content="Hugo 0.92.1">
 <meta name=description content="Tutoriel sur Kubernetes">
 <meta name=author content="Maxime Calves">
 <link rel=icon href=/kubernetes-tutorial/images/favicon.png type=image/png>
 <title>Operator :: Kubernetes Tutoriel</title>
-<link href=/kubernetes-tutorial/css/nucleus.css?1643227243 rel=stylesheet>
-<link href=/kubernetes-tutorial/css/fontawesome-all.min.css?1643227243 rel=stylesheet>
-<link href=/kubernetes-tutorial/css/hybrid.css?1643227243 rel=stylesheet>
-<link href=/kubernetes-tutorial/css/featherlight.min.css?1643227243 rel=stylesheet>
-<link href=/kubernetes-tutorial/css/perfect-scrollbar.min.css?1643227243 rel=stylesheet>
-<link href=/kubernetes-tutorial/css/auto-complete.css?1643227243 rel=stylesheet>
-<link href=/kubernetes-tutorial/css/atom-one-dark-reasonable.css?1643227243 rel=stylesheet>
-<link href=/kubernetes-tutorial/css/theme.css?1643227243 rel=stylesheet>
-<link href=/kubernetes-tutorial/css/tabs.css?1643227243 rel=stylesheet>
-<link href=/kubernetes-tutorial/css/hugo-theme.css?1643227243 rel=stylesheet>
-<link href=/kubernetes-tutorial/css/theme-blue.css?1643227243 rel=stylesheet>
-<script src=/kubernetes-tutorial/js/jquery-3.3.1.min.js?1643227243></script>
+<link href=/kubernetes-tutorial/css/nucleus.css?1643529949 rel=stylesheet>
+<link href=/kubernetes-tutorial/css/fontawesome-all.min.css?1643529949 rel=stylesheet>
+<link href=/kubernetes-tutorial/css/hybrid.css?1643529949 rel=stylesheet>
+<link href=/kubernetes-tutorial/css/featherlight.min.css?1643529949 rel=stylesheet>
+<link href=/kubernetes-tutorial/css/perfect-scrollbar.min.css?1643529949 rel=stylesheet>
+<link href=/kubernetes-tutorial/css/auto-complete.css?1643529949 rel=stylesheet>
+<link href=/kubernetes-tutorial/css/atom-one-dark-reasonable.css?1643529949 rel=stylesheet>
+<link href=/kubernetes-tutorial/css/theme.css?1643529949 rel=stylesheet>
+<link href=/kubernetes-tutorial/css/tabs.css?1643529949 rel=stylesheet>
+<link href=/kubernetes-tutorial/css/hugo-theme.css?1643529949 rel=stylesheet>
+<link href=/kubernetes-tutorial/css/theme-blue.css?1643529949 rel=stylesheet>
+<script src=/kubernetes-tutorial/js/jquery-3.3.1.min.js?1643529949></script>
 <style>:root #header+#content>#left>#rlblock_left{display:none!important}</style>
 </head>
 <body data-url=/kubernetes-tutorial/kubernetes/intermediare/operator/>
@@ -32,10 +32,10 @@
 <input data-search-input id=search-by type=search placeholder=Search...>
 <span data-search-clear><i class="fas fa-times"></i></span>
 </div>
-<script type=text/javascript src=/kubernetes-tutorial/js/lunr.min.js?1643227243></script>
-<script type=text/javascript src=/kubernetes-tutorial/js/auto-complete.js?1643227243></script>
+<script type=text/javascript src=/kubernetes-tutorial/js/lunr.min.js?1643529949></script>
+<script type=text/javascript src=/kubernetes-tutorial/js/auto-complete.js?1643529949></script>
 <script type=text/javascript>var baseurl="https://maxime-cls.github.io/kubernetes-tutorial/"</script>
-<script type=text/javascript src=/kubernetes-tutorial/js/search.js?1643227243></script>
+<script type=text/javascript src=/kubernetes-tutorial/js/search.js?1643529949></script>
 </div>
 <div class=highlightable>
 <ul class=topics>
@@ -223,6 +223,7 @@ Ingress
 <ul>
 <li><a href=#prérequis>Prérequis</a></li>
 <li><a href=#crds>CRDs</a></li>
+<li><a href=#créer-un-peu-de-kafka>Créer un peu de Kafka</a></li>
 </ul>
 </nav>
 </div>
@@ -447,142 +448,103 @@ Ready For Delivery
 </code></pre><p>Faire plus de pizzas</p>
 <pre tabindex=0><code>vim apps/pizzas/meat-lovers.yaml
 </code></pre><p>meat-lovers.yaml</p>
-<pre tabindex=0><code>
-</code></pre><p>apiVersion: mykubernetes.acme.org/v1
+<pre tabindex=0><code>apiVersion: mykubernetes.acme.org/v1
 kind: Pizza
 metadata:
-name: meatsp
+  name: meatsp
 spec:
-toppings:</p>
-<ul>
-<li>mozzarella</li>
-<li>pepperoni</li>
-<li>sausage</li>
-<li>bacon
-sauce: extra</li>
-</ul>
-<pre tabindex=0><code>
-</code></pre><p>vim apps/pizzas/veggie-lovers.yaml</p>
-<pre tabindex=0><code>
-</code></pre><p>vim apps/pizzas/veggie-lovers.yaml</p>
-<pre tabindex=0><code>
-</code></pre><p>apiVersion: mykubernetes.acme.org/v1
+  toppings:
+  - mozzarella
+  - pepperoni
+  - sausage
+  - bacon
+  sauce: extra
+</code></pre><pre tabindex=0><code>vim apps/pizzas/veggie-lovers.yaml
+</code></pre><pre tabindex=0><code>apiVersion: mykubernetes.acme.org/v1
 kind: Pizza
 metadata:
-name: veggiep
+  name: veggiep
 spec:
-toppings:</p>
-<ul>
-<li>mozzarella</li>
-<li>black olives
-sauce: extra</li>
-</ul>
-<pre tabindex=0><code>
-</code></pre><p>kubectl apply -f apps/pizzas/meat-lovers.yaml
+  toppings:
+  - mozzarella
+  - black olives
+  sauce: extra
+</code></pre><pre tabindex=0><code>kubectl apply -f apps/pizzas/meat-lovers.yaml
 kubectl apply -f apps/pizzas/veggie-lovers.yaml
-kubectl get pizzas &ndash;all-namespaces</p>
-<pre tabindex=0><code>
-Manger toutes les pizzas
-
-</code></pre><p>kubectl delete pizzas &ndash;all</p>
-<pre tabindex=0><code>
-Supprimer les ressources
-
-</code></pre><p>kubectl delete all &ndash;all</p>
-<pre tabindex=0><code>
-
-## Créer un peu de Kafka
-
-Kafka pour Minikube
-Créez un nouvel espace de nom pour cette expérience :
-
-</code></pre><p>kubectl create namespace franz
-kubectl config set-context &ndash;current &ndash;namespace=franz</p>
-<pre tabindex=0><code>
-Déployer l'opérateur Kafka :
-
-</code></pre><p>curl -sL <a href=https://github.com/operator-framework/operator-lifecycle-manager/releases/download/v0.20.0/install.sh>https://github.com/operator-framework/operator-lifecycle-manager/releases/download/v0.20.0/install.sh</a> | bash -s v0.20.0</p>
-<pre tabindex=0><code>
-</code></pre><p>kubectl create -f <a href=https://operatorhub.io/install/strimzi-kafka-operator.yaml>https://operatorhub.io/install/strimzi-kafka-operator.yaml</a></p>
-<pre tabindex=0><code>
-</code></pre><p>kubectl get csv</p>
-<pre tabindex=0><code>
-Attendez un peu jusqu'à l'état succès :
-
-</code></pre><p>watch kubectl get csv</p>
-<pre tabindex=0><code>
-</code></pre><p>NAME DISPLAY VERSION REPLACES PHASE
-strimzi-cluster-operator.v0.27.1 Strimzi 0.27.1 strimzi-cluster-operator.v0.27.0 Succeeded</p>
-<pre tabindex=0><code>
-Démarrer une veille dans un autre terminal :
-
-</code></pre><p>watch kubectl get pods</p>
-<pre tabindex=0><code>
-Ensuite, déployez la ressource en demandant un cluster Kafka :
-
-</code></pre><p>vim apps/kubefiles/mykafka.yml</p>
-<pre tabindex=0><code>
-mykafka.yml
-
-</code></pre><p>apiVersion: kafka.strimzi.io/v1beta2
+kubectl get pizzas --all-namespaces
+</code></pre><p>Manger toutes les pizzas</p>
+<pre tabindex=0><code>kubectl delete pizzas --all
+</code></pre><p>Supprimer les ressources</p>
+<pre tabindex=0><code>kubectl delete all --all
+</code></pre><h2 id=créer-un-peu-de-kafka>Créer un peu de Kafka</h2>
+<p>Kafka pour Minikube
+Créez un nouvel espace de nom pour cette expérience :</p>
+<pre tabindex=0><code>kubectl create namespace franz
+kubectl config set-context --current --namespace=franz
+</code></pre><p>Déployer l&rsquo;opérateur Kafka :</p>
+<pre tabindex=0><code>curl -sL https://github.com/operator-framework/operator-lifecycle-manager/releases/download/v0.20.0/install.sh | bash -s v0.20.0
+</code></pre><pre tabindex=0><code>kubectl create -f https://operatorhub.io/install/strimzi-kafka-operator.yaml
+</code></pre><pre tabindex=0><code>kubectl get csv
+</code></pre><p>Attendez un peu jusqu&rsquo;à l&rsquo;état succès :</p>
+<pre tabindex=0><code>watch kubectl get csv
+</code></pre><pre tabindex=0><code>NAME                               DISPLAY   VERSION   REPLACES                           PHASE
+strimzi-cluster-operator.v0.27.1   Strimzi   0.27.1    strimzi-cluster-operator.v0.27.0   Succeeded
+</code></pre><p>Démarrer une veille dans un autre terminal :</p>
+<pre tabindex=0><code>watch kubectl get pods
+</code></pre><p>Ensuite, déployez la ressource en demandant un cluster Kafka :</p>
+<pre tabindex=0><code>vim apps/kubefiles/mykafka.yml
+</code></pre><p>mykafka.yml</p>
+<pre tabindex=0><code>apiVersion: kafka.strimzi.io/v1beta2
 kind: Kafka
 metadata:
-name: my-cluster
+  name: my-cluster
 spec:
-kafka:
-version: 3.0.0
-replicas: 3
-listeners:
-- name: plain
-port: 9092
-type: internal
-tls: false
-- name: tls
-port: 9093
-type: internal
-tls: true
-config:
-offsets.topic.replication.factor: 3
-transaction.state.log.replication.factor: 3
-transaction.state.log.min.isr: 2
-log.message.format.version: &lsquo;3.0&rsquo;
-inter.broker.protocol.version: &lsquo;3.0&rsquo;
-storage:
-type: ephemeral
-zookeeper:
-replicas: 3
-storage:
-type: ephemeral
-entityOperator:
-topicOperator: {}
-userOperator: {}</p>
-<pre tabindex=0><code>
-
-</code></pre><p>kubectl apply -f apps/kubefiles/mykafka.yml</p>
-<pre tabindex=0><code>
-Résultat :
-
-</code></pre><p>NAME READY STATUS RESTARTS AGE
-my-cluster-entity-operator-66676cb9fb-fzckz 2/2 Running 0 29s
-my-cluster-kafka-0 2/2 Running 0 60s
-my-cluster-kafka-1 2/2 Running 0 60s
-my-cluster-kafka-2 2/2 Running 0 60s
-my-cluster-zookeeper-0 2/2 Running 0 92s
-my-cluster-zookeeper-1 2/2 Running 0 92s
-my-cluster-zookeeper-2 2/2 Running 0 92s</p>
-<pre tabindex=0><code>
-</code></pre><p>kubectl get kafkas</p>
-<pre tabindex=0><code>
-</code></pre><p>NAME DESIRED KAFKA REPLICAS DESIRED ZK REPLICAS READY WARNINGS
-my-cluster 3 3 True True</p>
-<pre tabindex=0><code>
-Supprimer les ressources
-
-</code></pre><p>kubectl delete namespace pizzahat
+  kafka:
+    version: 3.0.0
+    replicas: 3
+    listeners:
+      - name: plain
+        port: 9092
+        type: internal
+        tls: false
+      - name: tls
+        port: 9093
+        type: internal
+        tls: true
+    config:
+      offsets.topic.replication.factor: 3
+      transaction.state.log.replication.factor: 3
+      transaction.state.log.min.isr: 2
+      log.message.format.version: '3.0'
+      inter.broker.protocol.version: '3.0'
+    storage:
+      type: ephemeral
+  zookeeper:
+    replicas: 3
+    storage:
+      type: ephemeral
+  entityOperator:
+    topicOperator: {}
+    userOperator: {}
+</code></pre><pre tabindex=0><code>kubectl apply -f apps/kubefiles/mykafka.yml
+</code></pre><p>Résultat :</p>
+<pre tabindex=0><code>NAME                                          READY   STATUS    RESTARTS   AGE
+my-cluster-entity-operator-66676cb9fb-fzckz   2/2     Running   0          29s
+my-cluster-kafka-0                            2/2     Running   0          60s
+my-cluster-kafka-1                            2/2     Running   0          60s
+my-cluster-kafka-2                            2/2     Running   0          60s
+my-cluster-zookeeper-0                        2/2     Running   0          92s
+my-cluster-zookeeper-1                        2/2     Running   0          92s
+my-cluster-zookeeper-2                        2/2     Running   0          92s
+</code></pre><pre tabindex=0><code>kubectl get kafkas
+</code></pre><pre tabindex=0><code>NAME         DESIRED KAFKA REPLICAS   DESIRED ZK REPLICAS   READY   WARNINGS
+my-cluster   3                        3                     True    True
+</code></pre><p>Supprimer les ressources</p>
+<pre tabindex=0><code>kubectl delete namespace pizzahat
 kubectl delete -f apps/pizzas/pizza-crd.yaml
 kubectl delete kafka my-cluster
-kubectl delete namespace franz</p>
-<pre tabindex=0><code></code></pre>
+kubectl delete namespace franz
+</code></pre>
 <footer class=footline>
 </footer>
 </div>
@@ -595,17 +557,17 @@ kubectl delete namespace franz</p>
 <div style=left:-1000px;overflow:scroll;position:absolute;top:-1000px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px>
 <div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div>
 </div>
-<script src=/kubernetes-tutorial/js/clipboard.min.js?1643227243></script>
-<script src=/kubernetes-tutorial/js/perfect-scrollbar.min.js?1643227243></script>
-<script src=/kubernetes-tutorial/js/perfect-scrollbar.jquery.min.js?1643227243></script>
-<script src=/kubernetes-tutorial/js/jquery.sticky.js?1643227243></script>
-<script src=/kubernetes-tutorial/js/featherlight.min.js?1643227243></script>
-<script src=/kubernetes-tutorial/js/highlight.pack.js?1643227243></script>
+<script src=/kubernetes-tutorial/js/clipboard.min.js?1643529949></script>
+<script src=/kubernetes-tutorial/js/perfect-scrollbar.min.js?1643529949></script>
+<script src=/kubernetes-tutorial/js/perfect-scrollbar.jquery.min.js?1643529949></script>
+<script src=/kubernetes-tutorial/js/jquery.sticky.js?1643529949></script>
+<script src=/kubernetes-tutorial/js/featherlight.min.js?1643529949></script>
+<script src=/kubernetes-tutorial/js/highlight.pack.js?1643529949></script>
 <script>hljs.initHighlightingOnLoad()</script>
-<script src=/kubernetes-tutorial/js/modernizr.custom-3.6.0.js?1643227243></script>
-<script src=/kubernetes-tutorial/js/learn.js?1643227243></script>
-<script src=/kubernetes-tutorial/js/hugo-learn.js?1643227243></script>
-<script src=/kubernetes-tutorial/mermaid/mermaid.js?1643227243></script>
+<script src=/kubernetes-tutorial/js/modernizr.custom-3.6.0.js?1643529949></script>
+<script src=/kubernetes-tutorial/js/learn.js?1643529949></script>
+<script src=/kubernetes-tutorial/js/hugo-learn.js?1643529949></script>
+<script src=/kubernetes-tutorial/mermaid/mermaid.js?1643529949></script>
 <script>mermaid.initialize({startOnLoad:!0})</script>
 </body>
 </html>
