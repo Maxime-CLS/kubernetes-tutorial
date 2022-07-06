@@ -1,270 +1,48 @@
-<!doctype html><html lang=en class="js csstransforms3d">
-<head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=generator content="Hugo 0.92.1">
-<meta name=description content="Tutoriel sur Kubernetes">
-<meta name=author content="Maxime Calves">
-<link rel=icon href=/kubernetes-tutorial/images/favicon.png type=image/png>
-<title>Configmap :: Kubernetes Tutoriel</title>
-<link href=/kubernetes-tutorial/css/nucleus.css?1643529949 rel=stylesheet>
-<link href=/kubernetes-tutorial/css/fontawesome-all.min.css?1643529949 rel=stylesheet>
-<link href=/kubernetes-tutorial/css/hybrid.css?1643529949 rel=stylesheet>
-<link href=/kubernetes-tutorial/css/featherlight.min.css?1643529949 rel=stylesheet>
-<link href=/kubernetes-tutorial/css/perfect-scrollbar.min.css?1643529949 rel=stylesheet>
-<link href=/kubernetes-tutorial/css/auto-complete.css?1643529949 rel=stylesheet>
-<link href=/kubernetes-tutorial/css/atom-one-dark-reasonable.css?1643529949 rel=stylesheet>
-<link href=/kubernetes-tutorial/css/theme.css?1643529949 rel=stylesheet>
-<link href=/kubernetes-tutorial/css/tabs.css?1643529949 rel=stylesheet>
-<link href=/kubernetes-tutorial/css/hugo-theme.css?1643529949 rel=stylesheet>
-<link href=/kubernetes-tutorial/css/theme-blue.css?1643529949 rel=stylesheet>
-<script src=/kubernetes-tutorial/js/jquery-3.3.1.min.js?1643529949></script>
-<style>:root #header+#content>#left>#rlblock_left{display:none!important}</style>
-</head>
-<body data-url=/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/configmap/>
-<nav id=sidebar class=showVisitedLinks>
-<div id=header-wrapper>
-<div id=header>
-<img src=../../../../kubernetes-tutorial/media/logo.png>
-</div>
-<div class=searchbox>
-<label for=search-by><i class="fas fa-search"></i></label>
+<!doctype html><html lang=en class="js csstransforms3d"><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.101.0"><meta name=description content="Tutoriel sur Kubernetes"><meta name=author content="Maxime Calves"><link rel=icon href=/kubernetes-tutorial/images/favicon.png type=image/png><title>Configmap :: Kubernetes Tutoriel</title><link href=/kubernetes-tutorial/css/nucleus.css?1657096699 rel=stylesheet><link href=/kubernetes-tutorial/css/fontawesome-all.min.css?1657096699 rel=stylesheet><link href=/kubernetes-tutorial/css/hybrid.css?1657096699 rel=stylesheet><link href=/kubernetes-tutorial/css/featherlight.min.css?1657096699 rel=stylesheet><link href=/kubernetes-tutorial/css/perfect-scrollbar.min.css?1657096699 rel=stylesheet><link href=/kubernetes-tutorial/css/auto-complete.css?1657096699 rel=stylesheet><link href=/kubernetes-tutorial/css/atom-one-dark-reasonable.css?1657096699 rel=stylesheet><link href=/kubernetes-tutorial/css/theme.css?1657096699 rel=stylesheet><link href=/kubernetes-tutorial/css/tabs.css?1657096699 rel=stylesheet><link href=/kubernetes-tutorial/css/hugo-theme.css?1657096699 rel=stylesheet><link href=/kubernetes-tutorial/css/theme-blue.css?1657096699 rel=stylesheet><script src=/kubernetes-tutorial/js/jquery-3.3.1.min.js?1657096699></script><style>:root #header+#content>#left>#rlblock_left{display:none!important}</style></head><body data-url=/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/configmap/><nav id=sidebar class=showVisitedLinks><div id=header-wrapper><div id=header><img src=../../../../kubernetes-tutorial/media/logo.png></div><div class=searchbox><label for=search-by><i class="fas fa-search"></i></label>
 <input data-search-input id=search-by type=search placeholder=Search...>
-<span data-search-clear><i class="fas fa-times"></i></span>
-</div>
-<script type=text/javascript src=/kubernetes-tutorial/js/lunr.min.js?1643529949></script>
-<script type=text/javascript src=/kubernetes-tutorial/js/auto-complete.js?1643529949></script>
-<script type=text/javascript>var baseurl="https://maxime-cls.github.io/kubernetes-tutorial/"</script>
-<script type=text/javascript src=/kubernetes-tutorial/js/search.js?1643529949></script>
-</div>
-<div class=highlightable>
-<ul class=topics>
-<li data-nav-id=/kubernetes-tutorial/kubernetes/ title=Kubernetes class="dd-item
-parent">
-<a href=/kubernetes-tutorial/kubernetes/>
-Kubernetes
-<i class="fas fa-check read-icon"></i>
-</a>
-<ul>
-<li data-nav-id=/kubernetes-tutorial/kubernetes/d%C3%A9butant/ title=Débutant class=dd-item>
-<a href=/kubernetes-tutorial/kubernetes/d%C3%A9butant/>
-Débutant
-<i class="fas fa-check read-icon"></i>
-</a>
-<ul>
-<li data-nav-id=/kubernetes-tutorial/kubernetes/d%C3%A9butant/kubectl/ title=Kubectl class=dd-item>
-<a href=/kubernetes-tutorial/kubernetes/d%C3%A9butant/kubectl/>
-Kubectl
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/kubernetes-tutorial/kubernetes/d%C3%A9butant/pod-replica-deployment/ title="Pod, Replicaset, Deployment" class=dd-item>
-<a href=/kubernetes-tutorial/kubernetes/d%C3%A9butant/pod-replica-deployment/>
-Pod, Replicaset, Deployment
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/kubernetes-tutorial/kubernetes/d%C3%A9butant/services/ title=Service class=dd-item>
-<a href=/kubernetes-tutorial/kubernetes/d%C3%A9butant/services/>
-Service
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/kubernetes-tutorial/kubernetes/d%C3%A9butant/logs/ title=Logs class=dd-item>
-<a href=/kubernetes-tutorial/kubernetes/d%C3%A9butant/logs/>
-Logs
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/kubernetes-tutorial/kubernetes/d%C3%A9butant/servicemagic/ title="Service Magic" class=dd-item>
-<a href=/kubernetes-tutorial/kubernetes/d%C3%A9butant/servicemagic/>
-Service Magic
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/kubernetes-tutorial/kubernetes/d%C3%A9butant/blue-green/ title="Déploiement Blue/Green" class=dd-item>
-<a href=/kubernetes-tutorial/kubernetes/d%C3%A9butant/blue-green/>
-Déploiement Blue/Green
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-</ul>
-</li>
-<li data-nav-id=/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/ title=Elementaire class="dd-item
-parent">
-<a href=/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/>
-Elementaire
-<i class="fas fa-check read-icon"></i>
-</a>
-<ul>
-<li data-nav-id=/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/ressources-limites/ title="Ressources et limites" class=dd-item>
-<a href=/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/ressources-limites/>
-Ressources et limites
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/mise-a-jour/ title="Mise à jour permanentes" class=dd-item>
-<a href=/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/mise-a-jour/>
-Mise à jour permanentes
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/liveness-readiness/ title="Liveness & Readiness" class=dd-item>
-<a href=/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/liveness-readiness/>
-Liveness & Readiness
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/configmap/ title=Configmap class="dd-item active">
-<a href=/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/configmap/>
-Configmap
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-</ul>
-</li>
-<li data-nav-id=/kubernetes-tutorial/kubernetes/intermediare/ title=Intermediare class=dd-item>
-<a href=/kubernetes-tutorial/kubernetes/intermediare/>
-Intermediare
-<i class="fas fa-check read-icon"></i>
-</a>
-<ul>
-<li data-nav-id=/kubernetes-tutorial/kubernetes/intermediare/secret/ title=Secret class=dd-item>
-<a href=/kubernetes-tutorial/kubernetes/intermediare/secret/>
-Secret
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/kubernetes-tutorial/kubernetes/intermediare/operator/ title=Operator class=dd-item>
-<a href=/kubernetes-tutorial/kubernetes/intermediare/operator/>
-Operator
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/kubernetes-tutorial/kubernetes/intermediare/volumes/ title=Volumes class=dd-item>
-<a href=/kubernetes-tutorial/kubernetes/intermediare/volumes/>
-Volumes
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/kubernetes-tutorial/kubernetes/intermediare/taints_affinity/ title="Taints et Affinity" class=dd-item>
-<a href=/kubernetes-tutorial/kubernetes/intermediare/taints_affinity/>
-Taints et Affinity
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/kubernetes-tutorial/kubernetes/intermediare/job_cronjob/ title="Job & CronJob" class=dd-item>
-<a href=/kubernetes-tutorial/kubernetes/intermediare/job_cronjob/>
-Job & CronJob
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/kubernetes-tutorial/kubernetes/intermediare/daemonset/ title=Daemonset class=dd-item>
-<a href=/kubernetes-tutorial/kubernetes/intermediare/daemonset/>
-Daemonset
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/kubernetes-tutorial/kubernetes/intermediare/statefulsets/ title=StatefulSets class=dd-item>
-<a href=/kubernetes-tutorial/kubernetes/intermediare/statefulsets/>
-StatefulSets
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-</ul>
-</li>
-<li data-nav-id=/kubernetes-tutorial/kubernetes/avance/ title=Avancé class=dd-item>
-<a href=/kubernetes-tutorial/kubernetes/avance/>
-Avancé
-<i class="fas fa-check read-icon"></i>
-</a>
-<ul>
-<li data-nav-id=/kubernetes-tutorial/kubernetes/avance/ingress/ title=Ingress class=dd-item>
-<a href=/kubernetes-tutorial/kubernetes/avance/ingress/>
-Ingress
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<section id=prefooter>
-<hr>
-<ul>
-<li><a class=padding href=# data-clear-history-toggle><i class="fas fa-history fa-fw"></i> Clear History</a></li>
-</ul>
-</section>
-<section id=footer>
-<p>Built with <a href=https://github.com/matcornic/hugo-theme-learn><i class="fas fa-heart"></i></a> from <a href=https://getgrav.org>Grav</a> and <a href=https://gohugo.io/>Hugo</a></p>
-</section>
-</div>
-</nav>
-<section id=body>
-<div id=overlay></div>
-<div class="padding highlightable">
-<div>
-<div id=top-bar>
-<div id=breadcrumbs itemscope itemtype=http://data-vocabulary.org/Breadcrumb>
-<span id=sidebar-toggle-span>
-<a href=# id=sidebar-toggle data-sidebar-toggle>
-<i class="fas fa-bars"></i>
-</a>
-</span>
+<span data-search-clear><i class="fas fa-times"></i></span></div><script type=text/javascript src=/kubernetes-tutorial/js/lunr.min.js?1657096699></script>
+<script type=text/javascript src=/kubernetes-tutorial/js/auto-complete.js?1657096699></script>
+<script type=text/javascript>var baseurl="https://maxime-cls.github.io/kubernetes-tutorial/"</script><script type=text/javascript src=/kubernetes-tutorial/js/search.js?1657096699></script></div><div class=highlightable><ul class=topics><li data-nav-id=/kubernetes-tutorial/kubernetes/ title=Kubernetes class="dd-item
+parent"><a href=/kubernetes-tutorial/kubernetes/>Kubernetes
+<i class="fas fa-check read-icon"></i></a><ul><li data-nav-id=/kubernetes-tutorial/kubernetes/d%C3%A9butant/ title=Débutant class=dd-item><a href=/kubernetes-tutorial/kubernetes/d%C3%A9butant/>Débutant
+<i class="fas fa-check read-icon"></i></a><ul><li data-nav-id=/kubernetes-tutorial/kubernetes/d%C3%A9butant/kubectl/ title=Kubectl class=dd-item><a href=/kubernetes-tutorial/kubernetes/d%C3%A9butant/kubectl/>Kubectl
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/kubernetes-tutorial/kubernetes/d%C3%A9butant/pod-replica--deployment/ title="Pod, Replicaset, Deployment" class=dd-item><a href=/kubernetes-tutorial/kubernetes/d%C3%A9butant/pod-replica--deployment/>Pod, Replicaset, Deployment
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/kubernetes-tutorial/kubernetes/d%C3%A9butant/services/ title=Service class=dd-item><a href=/kubernetes-tutorial/kubernetes/d%C3%A9butant/services/>Service
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/kubernetes-tutorial/kubernetes/d%C3%A9butant/logs/ title=Logs class=dd-item><a href=/kubernetes-tutorial/kubernetes/d%C3%A9butant/logs/>Logs
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/kubernetes-tutorial/kubernetes/d%C3%A9butant/servicemagic/ title="Service Magic" class=dd-item><a href=/kubernetes-tutorial/kubernetes/d%C3%A9butant/servicemagic/>Service Magic
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/kubernetes-tutorial/kubernetes/d%C3%A9butant/blue-green/ title="Déploiement Blue/Green" class=dd-item><a href=/kubernetes-tutorial/kubernetes/d%C3%A9butant/blue-green/>Déploiement Blue/Green
+<i class="fas fa-check read-icon"></i></a></li></ul></li><li data-nav-id=/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/ title=Elementaire class="dd-item
+parent"><a href=/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/>Elementaire
+<i class="fas fa-check read-icon"></i></a><ul><li data-nav-id=/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/ressources-limites/ title="Ressources et limites" class=dd-item><a href=/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/ressources-limites/>Ressources et limites
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/mise-a-jour/ title="Mise à jour permanentes" class=dd-item><a href=/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/mise-a-jour/>Mise à jour permanentes
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/liveness-readiness/ title="Liveness & Readiness" class=dd-item><a href=/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/liveness-readiness/>Liveness & Readiness
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/configmap/ title=Configmap class="dd-item active"><a href=/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/configmap/>Configmap
+<i class="fas fa-check read-icon"></i></a></li></ul></li><li data-nav-id=/kubernetes-tutorial/kubernetes/intermediare/ title=Intermediare class=dd-item><a href=/kubernetes-tutorial/kubernetes/intermediare/>Intermediare
+<i class="fas fa-check read-icon"></i></a><ul><li data-nav-id=/kubernetes-tutorial/kubernetes/intermediare/secret/ title=Secret class=dd-item><a href=/kubernetes-tutorial/kubernetes/intermediare/secret/>Secret
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/kubernetes-tutorial/kubernetes/intermediare/operator/ title=Operator class=dd-item><a href=/kubernetes-tutorial/kubernetes/intermediare/operator/>Operator
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/kubernetes-tutorial/kubernetes/intermediare/volumes/ title=Volumes class=dd-item><a href=/kubernetes-tutorial/kubernetes/intermediare/volumes/>Volumes
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/kubernetes-tutorial/kubernetes/intermediare/taints_affinity/ title="Taints et Affinity" class=dd-item><a href=/kubernetes-tutorial/kubernetes/intermediare/taints_affinity/>Taints et Affinity
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/kubernetes-tutorial/kubernetes/intermediare/job_cronjob/ title="Job & CronJob" class=dd-item><a href=/kubernetes-tutorial/kubernetes/intermediare/job_cronjob/>Job & CronJob
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/kubernetes-tutorial/kubernetes/intermediare/daemonset/ title=Daemonset class=dd-item><a href=/kubernetes-tutorial/kubernetes/intermediare/daemonset/>Daemonset
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/kubernetes-tutorial/kubernetes/intermediare/statefulsets/ title=StatefulSets class=dd-item><a href=/kubernetes-tutorial/kubernetes/intermediare/statefulsets/>StatefulSets
+<i class="fas fa-check read-icon"></i></a></li></ul></li><li data-nav-id=/kubernetes-tutorial/kubernetes/avance/ title=Avancé class=dd-item><a href=/kubernetes-tutorial/kubernetes/avance/>Avancé
+<i class="fas fa-check read-icon"></i></a><ul><li data-nav-id=/kubernetes-tutorial/kubernetes/avance/ingress/ title=Ingress class=dd-item><a href=/kubernetes-tutorial/kubernetes/avance/ingress/>Ingress
+<i class="fas fa-check read-icon"></i></a></li></ul></li></ul></li></ul><section id=prefooter><hr><ul><li><a class=padding href=# data-clear-history-toggle><i class="fas fa-history fa-fw"></i> Clear History</a></li></ul></section><section id=footer><p>Built with <a href=https://github.com/matcornic/hugo-theme-learn><i class="fas fa-heart"></i></a> from <a href=https://getgrav.org>Grav</a> and <a href=https://gohugo.io/>Hugo</a></p></section></div></nav><section id=body><div id=overlay></div><div class="padding highlightable"><div><div id=top-bar><div id=breadcrumbs itemscope itemtype=http://data-vocabulary.org/Breadcrumb><span id=sidebar-toggle-span><a href=# id=sidebar-toggle data-sidebar-toggle><i class="fas fa-bars"></i></a></span>
 <span id=toc-menu><i class="fas fa-list-alt"></i></span>
-<span class=links>
-<a href=/kubernetes-tutorial/>Kubernetes Tutoriel</a> > <a href=/kubernetes-tutorial/kubernetes/>Kubernetes</a> > <a href=/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/>Elementaire</a> > Configmap
-</span>
-</div>
-<div class=progress>
-<div class=wrapper>
-<nav id=TableOfContents>
-<ul>
-<li><a href=#prérequis>Prérequis</a></li>
-</ul>
-</nav>
-</div>
-</div>
-</div>
-</div>
-<div id=head-tags>
-</div>
-<div id=body-inner>
-<h1>
-Configmap
-</h1>
-<h2 id=prérequis>Prérequis</h2>
-<ul>
-<li>Minikube <a href=https://kubernetes.io/fr/docs/tasks/tools/install-minikube/#installez-minikube-par-t%C3%A9l%C3%A9chargement-direct>Install</a> <a href=https://kubernetes.io/docs/setup/learning-environment/minikube/#specifying-the-vm-driver>Driver none</a></li>
-<li>kubectl <a href=https://kubernetes.io/fr/docs/tasks/tools/install-kubectl/>Install</a></li>
-<li>Stern <a href=https://kubernetes.io/blog/2016/10/tail-kubernetes-with-stern/>Docs</a> <a href=https://github.com/wercker/stern/releases>Release</a></li>
-<li>jq <a href=https://stedolan.github.io/jq/download/>Install</a></li>
-<li>3 terminal SSH</li>
-</ul>
-<p>ConfigMap est la ressource Kubernetes qui vous permet d&rsquo;externaliser la configuration de votre application.</p>
-<p>La configuration d&rsquo;une application est tout ce qui est susceptible de varier entre les déploiements (staging, production, environnements de développement, etc).</p>
-<p><a href=https://12factor.net/config>The Twelve-Factor App</a></p>
-<p>Variables d&rsquo;environnement</p>
-<p>MyRESTController.java comprend un petit morceau de code qui s&rsquo;adresse à l&rsquo;environnement :</p>
-<pre tabindex=0><code>@RequestMapping(&quot;/configure&quot;)
+<span class=links><a href=/kubernetes-tutorial/>Kubernetes Tutoriel</a> > <a href=/kubernetes-tutorial/kubernetes/>Kubernetes</a> > <a href=/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/>Elementaire</a> > Configmap</span></div><div class=progress><div class=wrapper><nav id=TableOfContents><ul><li><a href=#prérequis>Prérequis</a></li></ul></nav></div></div></div></div><div id=head-tags></div><div id=body-inner><h1>Configmap</h1><h2 id=prérequis>Prérequis</h2><ul><li>Minikube <a href=https://kubernetes.io/fr/docs/tasks/tools/install-minikube/#installez-minikube-par-t%C3%A9l%C3%A9chargement-direct>Install</a> <a href=https://kubernetes.io/docs/setup/learning-environment/minikube/#specifying-the-vm-driver>Driver none</a></li><li>kubectl <a href=https://kubernetes.io/fr/docs/tasks/tools/install-kubectl/>Install</a></li><li>Stern <a href=https://kubernetes.io/blog/2016/10/tail-kubernetes-with-stern/>Docs</a> <a href=https://github.com/wercker/stern/releases>Release</a></li><li>jq <a href=https://stedolan.github.io/jq/download/>Install</a></li><li>3 terminal SSH</li></ul><p>ConfigMap est la ressource Kubernetes qui vous permet d&rsquo;externaliser la configuration de votre application.</p><p>La configuration d&rsquo;une application est tout ce qui est susceptible de varier entre les déploiements (staging, production, environnements de développement, etc).</p><p><a href=https://12factor.net/config>The Twelve-Factor App</a></p><p>Variables d&rsquo;environnement</p><p>MyRESTController.java comprend un petit morceau de code qui s&rsquo;adresse à l&rsquo;environnement :</p><pre tabindex=0><code>@RequestMapping(&#34;/configure&#34;)
    public String configure() {
-        String databaseConn = environment.getProperty(&quot;DBCONN&quot;,&quot;Default&quot;);
-        String msgBroker = environment.getProperty(&quot;MSGBROKER&quot;,&quot;Default&quot;);
-        String hello = environment.getProperty(&quot;GREETING&quot;,&quot;Default&quot;);
-        String love = environment.getProperty(&quot;LOVE&quot;,&quot;Default&quot;);
-        return &quot;Configuration: \n&quot;
-            + &quot;databaseConn=&quot; + databaseConn + &quot;\n&quot;
-            + &quot;msgBroker=&quot; + msgBroker + &quot;\n&quot;
-            + &quot;hello=&quot; + hello + &quot;\n&quot;
-            + &quot;love=&quot; + love + &quot;\n&quot;;
+        String databaseConn = environment.getProperty(&#34;DBCONN&#34;,&#34;Default&#34;);
+        String msgBroker = environment.getProperty(&#34;MSGBROKER&#34;,&#34;Default&#34;);
+        String hello = environment.getProperty(&#34;GREETING&#34;,&#34;Default&#34;);
+        String love = environment.getProperty(&#34;LOVE&#34;,&#34;Default&#34;);
+        return &#34;Configuration: \n&#34;
+            + &#34;databaseConn=&#34; + databaseConn + &#34;\n&#34;
+            + &#34;msgBroker=&#34; + msgBroker + &#34;\n&#34;
+            + &#34;hello=&#34; + hello + &#34;\n&#34;
+            + &#34;love=&#34; + love + &#34;\n&#34;;
    }
-</code></pre><p>Les variables d&rsquo;environnement peuvent être manipulées au niveau du déploiement. Les modifications entraînent le redéploiement du Pod.</p>
-<p>Déploiement de myboot :</p>
-<p>Créer un fichier de déploiement</p>
-<pre tabindex=0><code>vi apps/kubefiles/myboot-deployment.yml
-</code></pre><p>myboot-deployment.yml</p>
-<pre tabindex=0><code>apiVersion: apps/v1
+</code></pre><p>Les variables d&rsquo;environnement peuvent être manipulées au niveau du déploiement. Les modifications entraînent le redéploiement du Pod.</p><p>Déploiement de myboot :</p><p>Créer un fichier de déploiement</p><pre tabindex=0><code>vi apps/kubefiles/myboot-deployment.yml
+</code></pre><p>myboot-deployment.yml</p><pre tabindex=0><code>apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
@@ -286,10 +64,8 @@ spec:
         ports:
           - containerPort: 8080
 </code></pre><pre tabindex=0><code>kubectl apply -f apps/kubefiles/myboot-deployment.yml
-</code></pre><p>Déployer le service myboot :</p>
-<pre tabindex=0><code>vi apps/kubefiles/myboot-service.yml
-</code></pre><p>myboot-service.yml</p>
-<pre tabindex=0><code>apiVersion: v1
+</code></pre><p>Déployer le service myboot :</p><pre tabindex=0><code>vi apps/kubefiles/myboot-service.yml
+</code></pre><p>myboot-service.yml</p><pre tabindex=0><code>apiVersion: v1
 kind: Service
 metadata:
   name: myboot
@@ -303,25 +79,20 @@ spec:
     app: myboot
   type: LoadBalancer
 </code></pre><pre tabindex=0><code>kubectl apply -f apps/kubefiles/myboot-service.yml
-</code></pre><p>Et regardez l&rsquo;état du pod :</p>
-<pre tabindex=0><code>watch kubectl get pods
-</code></pre><p>Créer les variables IP et PORT :</p>
-<pre tabindex=0><code>IP=$(minikube ip -p devnation)
-PORT=$(kubectl get service/myboot -o jsonpath=&quot;{.spec.ports[*].nodePort}&quot;)
-</code></pre><p>Réaliser une requete sur le service :</p>
-<pre tabindex=0><code>curl $IP:$PORT
+</code></pre><p>Et regardez l&rsquo;état du pod :</p><pre tabindex=0><code>watch kubectl get pods
+</code></pre><p>Créer les variables IP et PORT :</p><pre tabindex=0><code>IP=$(minikube ip -p devnation)
+PORT=$(kubectl get service/myboot -o jsonpath=&#34;{.spec.ports[*].nodePort}&#34;)
+</code></pre><p>Réaliser une requete sur le service :</p><pre tabindex=0><code>curl $IP:$PORT
 </code></pre><pre tabindex=0><code>curl $IP:$PORT/configure
 </code></pre><pre tabindex=0><code>Configuration for : myboot-66d7d57687-jsbz7
 databaseConn=Default
 msgBroker=Default
 greeting=Default
 love=Default
-</code></pre><p>Définir les variables d&rsquo;environnement</p>
-<pre tabindex=0><code>kubectl set env deployment/myboot GREETING=&quot;namaste&quot;
-kubectl set env deployment/myboot LOVE=&quot;Aloha&quot;
-kubectl set env deployment/myboot DBCONN=&quot;jdbc:sqlserver://45.91.12.123:1443;user=MyUserName;password=*****;&quot;
-</code></pre><p>Regardez les pods reborn :</p>
-<pre tabindex=0><code>NAME                      READY   STATUS        RESTARTS   AGE
+</code></pre><p>Définir les variables d&rsquo;environnement</p><pre tabindex=0><code>kubectl set env deployment/myboot GREETING=&#34;namaste&#34;
+kubectl set env deployment/myboot LOVE=&#34;Aloha&#34;
+kubectl set env deployment/myboot DBCONN=&#34;jdbc:sqlserver://45.91.12.123:1443;user=MyUserName;password=*****;&#34;
+</code></pre><p>Regardez les pods reborn :</p><pre tabindex=0><code>NAME                      READY   STATUS        RESTARTS   AGE
 myboot-66d7d57687-jsbz7   1/1     Terminating   0          5m
 myboot-785ff6bddc-ghwpc   1/1     Running       0          13s
 </code></pre><pre tabindex=0><code>curl $IP:$PORT/configure
@@ -330,8 +101,7 @@ databaseConn=jdbc:sqlserver://45.91.12.123:1443;user=MyUserName;password=*****;
 msgBroker=Default
 greeting=namaste
 love=Aloha
-</code></pre><p>Décrivez le déploiement :</p>
-<pre tabindex=0><code>kubectl describe deployment myboot
+</code></pre><p>Décrivez le déploiement :</p><pre tabindex=0><code>kubectl describe deployment myboot
 </code></pre><pre tabindex=0><code>...
   Containers:
    myboot:
@@ -345,31 +115,27 @@ love=Aloha
     Mounts:      &lt;none&gt;
   Volumes:       &lt;none&gt;
 ...
-</code></pre><p>Supprimez les variables d&rsquo;environnement :</p>
-<pre tabindex=0><code>kubectl set env deployment/myboot GREETING-
+</code></pre><p>Supprimez les variables d&rsquo;environnement :</p><pre tabindex=0><code>kubectl set env deployment/myboot GREETING-
 kubectl set env deployment/myboot LOVE-
 kubectl set env deployment/myboot DBCONN-
-</code></pre><p>Et vérifiez qu&rsquo;ils ont été retirés :</p>
-<pre tabindex=0><code>curl $IP:$PORT/configure
+</code></pre><p>Et vérifiez qu&rsquo;ils ont été retirés :</p><pre tabindex=0><code>curl $IP:$PORT/configure
 </code></pre><pre tabindex=0><code>Configuration for : myboot-66d7d57687-xkgw6
 databaseConn=Default
 msgBroker=Default
 greeting=Default
 love=Default
-</code></pre><p>Créer un ConfigMap</p>
-<pre tabindex=0><code>kubectl create cm my-config --from-env-file=apps/config/some.properties
+</code></pre><p>Créer un ConfigMap</p><pre tabindex=0><code>kubectl create cm my-config --from-env-file=apps/config/some.properties
 </code></pre><pre tabindex=0><code>kubectl get cm
 kubectl get cm my-config
 kubectl get cm my-config -o json
 </code></pre><pre tabindex=0><code>...
-    &quot;data&quot;: {
-        &quot;GREETING&quot;: &quot;jambo&quot;,
-        &quot;LOVE&quot;: &quot;Amour&quot;
+    &#34;data&#34;: {
+        &#34;GREETING&#34;: &#34;jambo&#34;,
+        &#34;LOVE&#34;: &#34;Amour&#34;
     },
-    &quot;kind&quot;: &quot;ConfigMap&quot;,
+    &#34;kind&#34;: &#34;ConfigMap&#34;,
 ...
-</code></pre><p>Ou vous pouvez décrire l&rsquo;objet ConfigMap :</p>
-<pre tabindex=0><code>kubectl describe cm my-config
+</code></pre><p>Ou vous pouvez décrire l&rsquo;objet ConfigMap :</p><pre tabindex=0><code>kubectl describe cm my-config
 </code></pre><pre tabindex=0><code>Name:         my-config
 Namespace:    myspace
 Labels:       &lt;none&gt;
@@ -384,18 +150,14 @@ LOVE:
 ====
 Amour
 Events:  &lt;none&gt;
-
-</code></pre><p>Maintenant, déployez l&rsquo;application avec sa requête pour le ConfigMap :</p>
-<pre tabindex=0><code>kubectl apply -f apps/kubefiles/myboot-deployment-configuration.yml
-</code></pre><p>Et obtenir son point de terminaison de configuration :</p>
-<pre tabindex=0><code>curl $IP:$PORT/configure
+</code></pre><p>Maintenant, déployez l&rsquo;application avec sa requête pour le ConfigMap :</p><pre tabindex=0><code>kubectl apply -f apps/kubefiles/myboot-deployment-configuration.yml
+</code></pre><p>Et obtenir son point de terminaison de configuration :</p><pre tabindex=0><code>curl $IP:$PORT/configure
 </code></pre><pre tabindex=0><code>Configuration for : myboot-84bfcff474-x6xnt
 databaseConn=Default
 msgBroker=Default
 greeting=jambo
 love=Amour
-</code></pre><p>Et passez à l&rsquo;autre fichier de propriétés en recréant le ConfigMap :</p>
-<pre tabindex=0><code>kubectl delete cm my-config
+</code></pre><p>Et passez à l&rsquo;autre fichier de propriétés en recréant le ConfigMap :</p><pre tabindex=0><code>kubectl delete cm my-config
 kubectl create cm my-config --from-env-file=apps/config/other.properties
 kubectl delete pod -l app=myboot
 </code></pre><pre tabindex=0><code>curl $IP:$PORT/configure
@@ -404,35 +166,18 @@ databaseConn=jdbc:sqlserver://123.123.123.123:1443;user=MyUserName;password=****
 msgBroker=tcp://localhost:61616?jms.useAsyncSend=true
 hello=Default
 love=Default
-</code></pre><p>Il y a beaucoup d&rsquo;autres façons de s&rsquo;amuser avec ConfigMaps, la documentation de base vous fait manipuler une spécification Pod au lieu d&rsquo;un déploiement mais les résultats sont fondamentalement les mêmes <a href=https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap>https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap</a>.</p>
-<p>Supprimer les ressources</p>
-<pre tabindex=0><code>kubectl delete deployment myboot
+</code></pre><p>Il y a beaucoup d&rsquo;autres façons de s&rsquo;amuser avec ConfigMaps, la documentation de base vous fait manipuler une spécification Pod au lieu d&rsquo;un déploiement mais les résultats sont fondamentalement les mêmes <a href=https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap>https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap</a>.</p><p>Supprimer les ressources</p><pre tabindex=0><code>kubectl delete deployment myboot
 kubectl delete cm my-config
 kubectl delete service myboot
-</code></pre>
-<footer class=footline>
-</footer>
-</div>
-</div>
-<div id=navigation>
-<a class="nav nav-prev" href=/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/liveness-readiness/ title="Liveness & Readiness"> <i class="fa fa-chevron-left"></i></a>
-<a class="nav nav-next" href=/kubernetes-tutorial/kubernetes/intermediare/ title=Intermediare style=margin-right:0><i class="fa fa-chevron-right"></i></a>
-</div>
-</section>
-<div style=left:-1000px;overflow:scroll;position:absolute;top:-1000px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px>
-<div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div>
-</div>
-<script src=/kubernetes-tutorial/js/clipboard.min.js?1643529949></script>
-<script src=/kubernetes-tutorial/js/perfect-scrollbar.min.js?1643529949></script>
-<script src=/kubernetes-tutorial/js/perfect-scrollbar.jquery.min.js?1643529949></script>
-<script src=/kubernetes-tutorial/js/jquery.sticky.js?1643529949></script>
-<script src=/kubernetes-tutorial/js/featherlight.min.js?1643529949></script>
-<script src=/kubernetes-tutorial/js/highlight.pack.js?1643529949></script>
-<script>hljs.initHighlightingOnLoad()</script>
-<script src=/kubernetes-tutorial/js/modernizr.custom-3.6.0.js?1643529949></script>
-<script src=/kubernetes-tutorial/js/learn.js?1643529949></script>
-<script src=/kubernetes-tutorial/js/hugo-learn.js?1643529949></script>
-<script src=/kubernetes-tutorial/mermaid/mermaid.js?1643529949></script>
-<script>mermaid.initialize({startOnLoad:!0})</script>
-</body>
-</html>
+</code></pre><footer class=footline></footer></div></div><div id=navigation><a class="nav nav-prev" href=/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/liveness-readiness/ title="Liveness & Readiness"><i class="fa fa-chevron-left"></i></a>
+<a class="nav nav-next" href=/kubernetes-tutorial/kubernetes/intermediare/ title=Intermediare style=margin-right:0><i class="fa fa-chevron-right"></i></a></div></section><div style=left:-1000px;overflow:scroll;position:absolute;top:-1000px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px><div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div></div><script src=/kubernetes-tutorial/js/clipboard.min.js?1657096699></script>
+<script src=/kubernetes-tutorial/js/perfect-scrollbar.min.js?1657096699></script>
+<script src=/kubernetes-tutorial/js/perfect-scrollbar.jquery.min.js?1657096699></script>
+<script src=/kubernetes-tutorial/js/jquery.sticky.js?1657096699></script>
+<script src=/kubernetes-tutorial/js/featherlight.min.js?1657096699></script>
+<script src=/kubernetes-tutorial/js/highlight.pack.js?1657096699></script>
+<script>hljs.initHighlightingOnLoad()</script><script src=/kubernetes-tutorial/js/modernizr.custom-3.6.0.js?1657096699></script>
+<script src=/kubernetes-tutorial/js/learn.js?1657096699></script>
+<script src=/kubernetes-tutorial/js/hugo-learn.js?1657096699></script>
+<script src=/kubernetes-tutorial/mermaid/mermaid.js?1657096699></script>
+<script>mermaid.initialize({startOnLoad:!0})</script></body></html>

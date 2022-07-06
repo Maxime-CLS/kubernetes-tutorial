@@ -1,371 +1,98 @@
-<!doctype html><html lang=en class="js csstransforms3d">
-<head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=generator content="Hugo 0.92.1">
-<meta name=description content="Tutoriel sur Kubernetes">
-<meta name=author content="Maxime Calves">
-<link rel=icon href=/kubernetes-tutorial/images/favicon.png type=image/png>
-<title>Kubectl :: Kubernetes Tutoriel</title>
-<link href=/kubernetes-tutorial/css/nucleus.css?1643529949 rel=stylesheet>
-<link href=/kubernetes-tutorial/css/fontawesome-all.min.css?1643529949 rel=stylesheet>
-<link href=/kubernetes-tutorial/css/hybrid.css?1643529949 rel=stylesheet>
-<link href=/kubernetes-tutorial/css/featherlight.min.css?1643529949 rel=stylesheet>
-<link href=/kubernetes-tutorial/css/perfect-scrollbar.min.css?1643529949 rel=stylesheet>
-<link href=/kubernetes-tutorial/css/auto-complete.css?1643529949 rel=stylesheet>
-<link href=/kubernetes-tutorial/css/atom-one-dark-reasonable.css?1643529949 rel=stylesheet>
-<link href=/kubernetes-tutorial/css/theme.css?1643529949 rel=stylesheet>
-<link href=/kubernetes-tutorial/css/tabs.css?1643529949 rel=stylesheet>
-<link href=/kubernetes-tutorial/css/hugo-theme.css?1643529949 rel=stylesheet>
-<link href=/kubernetes-tutorial/css/theme-blue.css?1643529949 rel=stylesheet>
-<script src=/kubernetes-tutorial/js/jquery-3.3.1.min.js?1643529949></script>
-<style>:root #header+#content>#left>#rlblock_left{display:none!important}</style>
-</head>
-<body data-url=/kubernetes-tutorial/kubernetes/d%C3%A9butant/kubectl/>
-<nav id=sidebar class=showVisitedLinks>
-<div id=header-wrapper>
-<div id=header>
-<img src=../../../../kubernetes-tutorial/media/logo.png>
-</div>
-<div class=searchbox>
-<label for=search-by><i class="fas fa-search"></i></label>
+<!doctype html><html lang=en class="js csstransforms3d"><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.101.0"><meta name=description content="Tutoriel sur Kubernetes"><meta name=author content="Maxime Calves"><link rel=icon href=/kubernetes-tutorial/images/favicon.png type=image/png><title>Kubectl :: Kubernetes Tutoriel</title><link href=/kubernetes-tutorial/css/nucleus.css?1657096699 rel=stylesheet><link href=/kubernetes-tutorial/css/fontawesome-all.min.css?1657096699 rel=stylesheet><link href=/kubernetes-tutorial/css/hybrid.css?1657096699 rel=stylesheet><link href=/kubernetes-tutorial/css/featherlight.min.css?1657096699 rel=stylesheet><link href=/kubernetes-tutorial/css/perfect-scrollbar.min.css?1657096699 rel=stylesheet><link href=/kubernetes-tutorial/css/auto-complete.css?1657096699 rel=stylesheet><link href=/kubernetes-tutorial/css/atom-one-dark-reasonable.css?1657096699 rel=stylesheet><link href=/kubernetes-tutorial/css/theme.css?1657096699 rel=stylesheet><link href=/kubernetes-tutorial/css/tabs.css?1657096699 rel=stylesheet><link href=/kubernetes-tutorial/css/hugo-theme.css?1657096699 rel=stylesheet><link href=/kubernetes-tutorial/css/theme-blue.css?1657096699 rel=stylesheet><script src=/kubernetes-tutorial/js/jquery-3.3.1.min.js?1657096699></script><style>:root #header+#content>#left>#rlblock_left{display:none!important}</style></head><body data-url=/kubernetes-tutorial/kubernetes/d%C3%A9butant/kubectl/><nav id=sidebar class=showVisitedLinks><div id=header-wrapper><div id=header><img src=../../../../kubernetes-tutorial/media/logo.png></div><div class=searchbox><label for=search-by><i class="fas fa-search"></i></label>
 <input data-search-input id=search-by type=search placeholder=Search...>
-<span data-search-clear><i class="fas fa-times"></i></span>
-</div>
-<script type=text/javascript src=/kubernetes-tutorial/js/lunr.min.js?1643529949></script>
-<script type=text/javascript src=/kubernetes-tutorial/js/auto-complete.js?1643529949></script>
-<script type=text/javascript>var baseurl="https://maxime-cls.github.io/kubernetes-tutorial/"</script>
-<script type=text/javascript src=/kubernetes-tutorial/js/search.js?1643529949></script>
-</div>
-<div class=highlightable>
-<ul class=topics>
-<li data-nav-id=/kubernetes-tutorial/kubernetes/ title=Kubernetes class="dd-item
-parent">
-<a href=/kubernetes-tutorial/kubernetes/>
-Kubernetes
-<i class="fas fa-check read-icon"></i>
-</a>
-<ul>
-<li data-nav-id=/kubernetes-tutorial/kubernetes/d%C3%A9butant/ title=Débutant class="dd-item
-parent">
-<a href=/kubernetes-tutorial/kubernetes/d%C3%A9butant/>
-Débutant
-<i class="fas fa-check read-icon"></i>
-</a>
-<ul>
-<li data-nav-id=/kubernetes-tutorial/kubernetes/d%C3%A9butant/kubectl/ title=Kubectl class="dd-item active">
-<a href=/kubernetes-tutorial/kubernetes/d%C3%A9butant/kubectl/>
-Kubectl
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/kubernetes-tutorial/kubernetes/d%C3%A9butant/pod-replica-deployment/ title="Pod, Replicaset, Deployment" class=dd-item>
-<a href=/kubernetes-tutorial/kubernetes/d%C3%A9butant/pod-replica-deployment/>
-Pod, Replicaset, Deployment
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/kubernetes-tutorial/kubernetes/d%C3%A9butant/services/ title=Service class=dd-item>
-<a href=/kubernetes-tutorial/kubernetes/d%C3%A9butant/services/>
-Service
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/kubernetes-tutorial/kubernetes/d%C3%A9butant/logs/ title=Logs class=dd-item>
-<a href=/kubernetes-tutorial/kubernetes/d%C3%A9butant/logs/>
-Logs
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/kubernetes-tutorial/kubernetes/d%C3%A9butant/servicemagic/ title="Service Magic" class=dd-item>
-<a href=/kubernetes-tutorial/kubernetes/d%C3%A9butant/servicemagic/>
-Service Magic
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/kubernetes-tutorial/kubernetes/d%C3%A9butant/blue-green/ title="Déploiement Blue/Green" class=dd-item>
-<a href=/kubernetes-tutorial/kubernetes/d%C3%A9butant/blue-green/>
-Déploiement Blue/Green
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-</ul>
-</li>
-<li data-nav-id=/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/ title=Elementaire class=dd-item>
-<a href=/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/>
-Elementaire
-<i class="fas fa-check read-icon"></i>
-</a>
-<ul>
-<li data-nav-id=/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/ressources-limites/ title="Ressources et limites" class=dd-item>
-<a href=/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/ressources-limites/>
-Ressources et limites
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/mise-a-jour/ title="Mise à jour permanentes" class=dd-item>
-<a href=/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/mise-a-jour/>
-Mise à jour permanentes
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/liveness-readiness/ title="Liveness & Readiness" class=dd-item>
-<a href=/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/liveness-readiness/>
-Liveness & Readiness
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/configmap/ title=Configmap class=dd-item>
-<a href=/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/configmap/>
-Configmap
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-</ul>
-</li>
-<li data-nav-id=/kubernetes-tutorial/kubernetes/intermediare/ title=Intermediare class=dd-item>
-<a href=/kubernetes-tutorial/kubernetes/intermediare/>
-Intermediare
-<i class="fas fa-check read-icon"></i>
-</a>
-<ul>
-<li data-nav-id=/kubernetes-tutorial/kubernetes/intermediare/secret/ title=Secret class=dd-item>
-<a href=/kubernetes-tutorial/kubernetes/intermediare/secret/>
-Secret
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/kubernetes-tutorial/kubernetes/intermediare/operator/ title=Operator class=dd-item>
-<a href=/kubernetes-tutorial/kubernetes/intermediare/operator/>
-Operator
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/kubernetes-tutorial/kubernetes/intermediare/volumes/ title=Volumes class=dd-item>
-<a href=/kubernetes-tutorial/kubernetes/intermediare/volumes/>
-Volumes
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/kubernetes-tutorial/kubernetes/intermediare/taints_affinity/ title="Taints et Affinity" class=dd-item>
-<a href=/kubernetes-tutorial/kubernetes/intermediare/taints_affinity/>
-Taints et Affinity
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/kubernetes-tutorial/kubernetes/intermediare/job_cronjob/ title="Job & CronJob" class=dd-item>
-<a href=/kubernetes-tutorial/kubernetes/intermediare/job_cronjob/>
-Job & CronJob
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/kubernetes-tutorial/kubernetes/intermediare/daemonset/ title=Daemonset class=dd-item>
-<a href=/kubernetes-tutorial/kubernetes/intermediare/daemonset/>
-Daemonset
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/kubernetes-tutorial/kubernetes/intermediare/statefulsets/ title=StatefulSets class=dd-item>
-<a href=/kubernetes-tutorial/kubernetes/intermediare/statefulsets/>
-StatefulSets
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-</ul>
-</li>
-<li data-nav-id=/kubernetes-tutorial/kubernetes/avance/ title=Avancé class=dd-item>
-<a href=/kubernetes-tutorial/kubernetes/avance/>
-Avancé
-<i class="fas fa-check read-icon"></i>
-</a>
-<ul>
-<li data-nav-id=/kubernetes-tutorial/kubernetes/avance/ingress/ title=Ingress class=dd-item>
-<a href=/kubernetes-tutorial/kubernetes/avance/ingress/>
-Ingress
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<section id=prefooter>
-<hr>
-<ul>
-<li><a class=padding href=# data-clear-history-toggle><i class="fas fa-history fa-fw"></i> Clear History</a></li>
-</ul>
-</section>
-<section id=footer>
-<p>Built with <a href=https://github.com/matcornic/hugo-theme-learn><i class="fas fa-heart"></i></a> from <a href=https://getgrav.org>Grav</a> and <a href=https://gohugo.io/>Hugo</a></p>
-</section>
-</div>
-</nav>
-<section id=body>
-<div id=overlay></div>
-<div class="padding highlightable">
-<div>
-<div id=top-bar>
-<div id=breadcrumbs itemscope itemtype=http://data-vocabulary.org/Breadcrumb>
-<span id=sidebar-toggle-span>
-<a href=# id=sidebar-toggle data-sidebar-toggle>
-<i class="fas fa-bars"></i>
-</a>
-</span>
+<span data-search-clear><i class="fas fa-times"></i></span></div><script type=text/javascript src=/kubernetes-tutorial/js/lunr.min.js?1657096699></script>
+<script type=text/javascript src=/kubernetes-tutorial/js/auto-complete.js?1657096699></script>
+<script type=text/javascript>var baseurl="https://maxime-cls.github.io/kubernetes-tutorial/"</script><script type=text/javascript src=/kubernetes-tutorial/js/search.js?1657096699></script></div><div class=highlightable><ul class=topics><li data-nav-id=/kubernetes-tutorial/kubernetes/ title=Kubernetes class="dd-item
+parent"><a href=/kubernetes-tutorial/kubernetes/>Kubernetes
+<i class="fas fa-check read-icon"></i></a><ul><li data-nav-id=/kubernetes-tutorial/kubernetes/d%C3%A9butant/ title=Débutant class="dd-item
+parent"><a href=/kubernetes-tutorial/kubernetes/d%C3%A9butant/>Débutant
+<i class="fas fa-check read-icon"></i></a><ul><li data-nav-id=/kubernetes-tutorial/kubernetes/d%C3%A9butant/kubectl/ title=Kubectl class="dd-item active"><a href=/kubernetes-tutorial/kubernetes/d%C3%A9butant/kubectl/>Kubectl
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/kubernetes-tutorial/kubernetes/d%C3%A9butant/pod-replica--deployment/ title="Pod, Replicaset, Deployment" class=dd-item><a href=/kubernetes-tutorial/kubernetes/d%C3%A9butant/pod-replica--deployment/>Pod, Replicaset, Deployment
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/kubernetes-tutorial/kubernetes/d%C3%A9butant/services/ title=Service class=dd-item><a href=/kubernetes-tutorial/kubernetes/d%C3%A9butant/services/>Service
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/kubernetes-tutorial/kubernetes/d%C3%A9butant/logs/ title=Logs class=dd-item><a href=/kubernetes-tutorial/kubernetes/d%C3%A9butant/logs/>Logs
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/kubernetes-tutorial/kubernetes/d%C3%A9butant/servicemagic/ title="Service Magic" class=dd-item><a href=/kubernetes-tutorial/kubernetes/d%C3%A9butant/servicemagic/>Service Magic
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/kubernetes-tutorial/kubernetes/d%C3%A9butant/blue-green/ title="Déploiement Blue/Green" class=dd-item><a href=/kubernetes-tutorial/kubernetes/d%C3%A9butant/blue-green/>Déploiement Blue/Green
+<i class="fas fa-check read-icon"></i></a></li></ul></li><li data-nav-id=/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/ title=Elementaire class=dd-item><a href=/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/>Elementaire
+<i class="fas fa-check read-icon"></i></a><ul><li data-nav-id=/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/ressources-limites/ title="Ressources et limites" class=dd-item><a href=/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/ressources-limites/>Ressources et limites
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/mise-a-jour/ title="Mise à jour permanentes" class=dd-item><a href=/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/mise-a-jour/>Mise à jour permanentes
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/liveness-readiness/ title="Liveness & Readiness" class=dd-item><a href=/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/liveness-readiness/>Liveness & Readiness
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/configmap/ title=Configmap class=dd-item><a href=/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/configmap/>Configmap
+<i class="fas fa-check read-icon"></i></a></li></ul></li><li data-nav-id=/kubernetes-tutorial/kubernetes/intermediare/ title=Intermediare class=dd-item><a href=/kubernetes-tutorial/kubernetes/intermediare/>Intermediare
+<i class="fas fa-check read-icon"></i></a><ul><li data-nav-id=/kubernetes-tutorial/kubernetes/intermediare/secret/ title=Secret class=dd-item><a href=/kubernetes-tutorial/kubernetes/intermediare/secret/>Secret
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/kubernetes-tutorial/kubernetes/intermediare/operator/ title=Operator class=dd-item><a href=/kubernetes-tutorial/kubernetes/intermediare/operator/>Operator
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/kubernetes-tutorial/kubernetes/intermediare/volumes/ title=Volumes class=dd-item><a href=/kubernetes-tutorial/kubernetes/intermediare/volumes/>Volumes
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/kubernetes-tutorial/kubernetes/intermediare/taints_affinity/ title="Taints et Affinity" class=dd-item><a href=/kubernetes-tutorial/kubernetes/intermediare/taints_affinity/>Taints et Affinity
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/kubernetes-tutorial/kubernetes/intermediare/job_cronjob/ title="Job & CronJob" class=dd-item><a href=/kubernetes-tutorial/kubernetes/intermediare/job_cronjob/>Job & CronJob
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/kubernetes-tutorial/kubernetes/intermediare/daemonset/ title=Daemonset class=dd-item><a href=/kubernetes-tutorial/kubernetes/intermediare/daemonset/>Daemonset
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/kubernetes-tutorial/kubernetes/intermediare/statefulsets/ title=StatefulSets class=dd-item><a href=/kubernetes-tutorial/kubernetes/intermediare/statefulsets/>StatefulSets
+<i class="fas fa-check read-icon"></i></a></li></ul></li><li data-nav-id=/kubernetes-tutorial/kubernetes/avance/ title=Avancé class=dd-item><a href=/kubernetes-tutorial/kubernetes/avance/>Avancé
+<i class="fas fa-check read-icon"></i></a><ul><li data-nav-id=/kubernetes-tutorial/kubernetes/avance/ingress/ title=Ingress class=dd-item><a href=/kubernetes-tutorial/kubernetes/avance/ingress/>Ingress
+<i class="fas fa-check read-icon"></i></a></li></ul></li></ul></li></ul><section id=prefooter><hr><ul><li><a class=padding href=# data-clear-history-toggle><i class="fas fa-history fa-fw"></i> Clear History</a></li></ul></section><section id=footer><p>Built with <a href=https://github.com/matcornic/hugo-theme-learn><i class="fas fa-heart"></i></a> from <a href=https://getgrav.org>Grav</a> and <a href=https://gohugo.io/>Hugo</a></p></section></div></nav><section id=body><div id=overlay></div><div class="padding highlightable"><div><div id=top-bar><div id=breadcrumbs itemscope itemtype=http://data-vocabulary.org/Breadcrumb><span id=sidebar-toggle-span><a href=# id=sidebar-toggle data-sidebar-toggle><i class="fas fa-bars"></i></a></span>
 <span id=toc-menu><i class="fas fa-list-alt"></i></span>
-<span class=links>
-<a href=/kubernetes-tutorial/>Kubernetes Tutoriel</a> > <a href=/kubernetes-tutorial/kubernetes/>Kubernetes</a> > <a href=/kubernetes-tutorial/kubernetes/d%C3%A9butant/>Débutant</a> > Kubectl
-</span>
-</div>
-<div class=progress>
-<div class=wrapper>
-<nav id=TableOfContents>
-<ul>
-<li><a href=#prérequis>Prérequis</a>
-<ul>
-<li><a href=#parlez-à-votre-cluster>Parlez à votre Cluster</a></li>
-<li><a href=#vue-du-noeud>Vue du noeud</a></li>
-<li><a href=#voir-les-pods-prêts-à-lemploi>Voir les Pods prêts à l&rsquo;emploi</a></li>
-<li><a href=#déployer-quelque-chose>Déployer quelque chose</a></li>
-<li><a href=#tout-en-surveillant-les-événements>Tout en surveillant les événements</a></li>
-<li><a href=#objets-créés>Objets créés</a></li>
-<li><a href=#exposer-un-service>Exposer un service</a></li>
-<li><a href=#parler-aux-applications>Parler aux applications</a></li>
-<li><a href=#nettoyage>Nettoyage</a></li>
-</ul>
-</li>
-</ul>
-</nav>
-</div>
-</div>
-</div>
-</div>
-<div id=head-tags>
-</div>
-<div id=body-inner>
-<h1>
-Kubectl
-</h1>
-<h2 id=prérequis>Prérequis</h2>
-<ul>
-<li>Minikube <a href=https://kubernetes.io/fr/docs/tasks/tools/install-minikube/#installez-minikube-par-t%C3%A9l%C3%A9chargement-direct>Install</a> <a href=https://kubernetes.io/docs/setup/learning-environment/minikube/#specifying-the-vm-driver>Driver none</a></li>
-<li>kubectl <a href=https://kubernetes.io/fr/docs/tasks/tools/install-kubectl/>Install</a></li>
-<li>Stern <a href=https://kubernetes.io/blog/2016/10/tail-kubernetes-with-stern/>Docs</a> <a href=https://github.com/wercker/stern/releases>Release</a></li>
-<li>jq <a href=https://stedolan.github.io/jq/download/>Install</a></li>
-<li>3 terminal SSH</li>
-</ul>
-<h3 id=parlez-à-votre-cluster>Parlez à votre Cluster</h3>
-<pre tabindex=0><code>echo $KUBECONFIG
+<span class=links><a href=/kubernetes-tutorial/>Kubernetes Tutoriel</a> > <a href=/kubernetes-tutorial/kubernetes/>Kubernetes</a> > <a href=/kubernetes-tutorial/kubernetes/d%C3%A9butant/>Débutant</a> > Kubectl</span></div><div class=progress><div class=wrapper><nav id=TableOfContents><ul><li><a href=#prérequis>Prérequis</a><ul><li><a href=#parlez-à-votre-cluster>Parlez à votre Cluster</a></li><li><a href=#vue-du-noeud>Vue du noeud</a></li><li><a href=#voir-les-pods-prêts-à-lemploi>Voir les Pods prêts à l&rsquo;emploi</a></li><li><a href=#déployer-quelque-chose>Déployer quelque chose</a></li><li><a href=#tout-en-surveillant-les-événements>Tout en surveillant les événements</a></li><li><a href=#objets-créés>Objets créés</a></li><li><a href=#exposer-un-service>Exposer un service</a></li><li><a href=#parler-aux-applications>Parler aux applications</a></li><li><a href=#nettoyage>Nettoyage</a></li></ul></li></ul></nav></div></div></div></div><div id=head-tags></div><div id=body-inner><h1>Kubectl</h1><h2 id=prérequis>Prérequis</h2><ul><li>Minikube <a href=https://kubernetes.io/fr/docs/tasks/tools/install-minikube/#installez-minikube-par-t%C3%A9l%C3%A9chargement-direct>Install</a> <a href=https://kubernetes.io/docs/setup/learning-environment/minikube/#specifying-the-vm-driver>Driver none</a></li><li>kubectl <a href=https://kubernetes.io/fr/docs/tasks/tools/install-kubectl/>Install</a></li><li>Stern <a href=https://kubernetes.io/blog/2016/10/tail-kubernetes-with-stern/>Docs</a> <a href=https://github.com/wercker/stern/releases>Release</a></li><li>jq <a href=https://stedolan.github.io/jq/download/>Install</a></li><li>3 terminal SSH</li></ul><h3 id=parlez-à-votre-cluster>Parlez à votre Cluster</h3><pre tabindex=0><code>echo $KUBECONFIG
 kubectl config view
-</code></pre><p>Affiche les paramètres fusionnés de kubeconfig</p>
-<h3 id=vue-du-noeud>Vue du noeud</h3>
-<pre tabindex=0><code>kubectl get nodes
+</code></pre><p>Affiche les paramètres fusionnés de kubeconfig</p><h3 id=vue-du-noeud>Vue du noeud</h3><pre tabindex=0><code>kubectl get nodes
 kubectl get nodes --show-labels
 kubectl get namespaces
-</code></pre><p>Affiche tous les noeuds, les labels définit et les espaces de noms.</p>
-<h3 id=voir-les-pods-prêts-à-lemploi>Voir les Pods prêts à l&rsquo;emploi</h3>
-<p>Votre fournisseur de Kubernetes comprend probablement de nombreuses <a href=https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/>espaces de noms</a> prêtes à l&rsquo;emploi :</p>
-<pre tabindex=0><code>kubectl get pods --all-namespaces
+</code></pre><p>Affiche tous les noeuds, les labels définit et les espaces de noms.</p><h3 id=voir-les-pods-prêts-à-lemploi>Voir les Pods prêts à l&rsquo;emploi</h3><p>Votre fournisseur de Kubernetes comprend probablement de nombreuses <a href=https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/>espaces de noms</a> prêtes à l&rsquo;emploi :</p><pre tabindex=0><code>kubectl get pods --all-namespaces
 kubectl get pods --all-namespaces --show-labels
 kubectl get pods --all-namespaces -o wide
 </code></pre><p>Affiche tous les espaces de noms, les labels définit et les sorties.
 Les espaces de noms sont destinés à être utilisés dans des environnements avec de nombreux utilisateurs répartis sur plusieurs équipes ou projets.
-Les espaces de noms sont un moyen de diviser les ressources du cluster entre plusieurs utilisateurs</p>
-<h3 id=déployer-quelque-chose>Déployer quelque chose</h3>
-<p>Créer un espace de nommage et déployer quelque chose :</p>
-<pre tabindex=0><code>kubectl create namespace mystuff
+Les espaces de noms sont un moyen de diviser les ressources du cluster entre plusieurs utilisateurs</p><h3 id=déployer-quelque-chose>Déployer quelque chose</h3><p>Créer un espace de nommage et déployer quelque chose :</p><pre tabindex=0><code>kubectl create namespace mystuff
 kubectl config set-context --current --namespace=mystuff
 
 kubectl create deployment myapp --image=quay.io/rhdevelopers/quarkus-demo:v1
-</code></pre><p>La commande &ldquo;kubectl config set-context&rdquo; permet une bascule rapide entre les namespaces du cluster kubernetes.</p>
-<h3 id=tout-en-surveillant-les-événements>Tout en surveillant les événements</h3>
-<p><strong>terminal 2</strong></p>
-<pre tabindex=0><code>watch kubectl get events --sort-by=.metadata.creationTimestamp
+</code></pre><p>La commande &ldquo;kubectl config set-context&rdquo; permet une bascule rapide entre les namespaces du cluster kubernetes.</p><h3 id=tout-en-surveillant-les-événements>Tout en surveillant les événements</h3><p><strong>terminal 2</strong></p><pre tabindex=0><code>watch kubectl get events --sort-by=.metadata.creationTimestamp
 </code></pre><pre tabindex=0><code>LAST SEEN   TYPE     REASON              OBJECT                        MESSAGE
 &lt;unknown&gt;   Normal   Scheduled           pod/myapp-5dcbf46dfc-ghrk4    Successfully assigned mystuff/myapp-5dcbf46dfc-ghrk4 to g
 cp-5xldg-w-a-5ptpn.us-central1-a.c.ocp42project.internal
 29s         Normal   SuccessfulCreate    replicaset/myapp-5dcbf46dfc   Created pod: myapp-5dcbf46dfc-ghrk4
 29s         Normal   ScalingReplicaSet   deployment/myapp              Scaled up replica set myapp-5dcbf46dfc to 1
-21s         Normal   Pulling             pod/myapp-5dcbf46dfc-ghrk4    Pulling image &quot;quay.io/burrsutter/quarkus-demo:1.0.0&quot;
-15s         Normal   Pulled              pod/myapp-5dcbf46dfc-ghrk4    Successfully pulled image &quot;quay.io/burrsutter/quarkus-dem
-o:1.0.0&quot;
+21s         Normal   Pulling             pod/myapp-5dcbf46dfc-ghrk4    Pulling image &#34;quay.io/burrsutter/quarkus-demo:1.0.0&#34;
+15s         Normal   Pulled              pod/myapp-5dcbf46dfc-ghrk4    Successfully pulled image &#34;quay.io/burrsutter/quarkus-dem
+o:1.0.0&#34;
 15s         Normal   Created             pod/myapp-5dcbf46dfc-ghrk4    Created container quarkus-demo
 15s         Normal   Started             pod/myapp-5dcbf46dfc-ghrk4    Started container quarkus-demo
-</code></pre><p>La commande &ldquo;watch&rdquo; permet d&rsquo;initer une écoute en temps réel des modifications d&rsquo;un objet.</p>
-<h3 id=objets-créés>Objets créés</h3>
-<p><strong>Déploiements</strong></p>
-<pre tabindex=0><code>kubectl get deployments
+</code></pre><p>La commande &ldquo;watch&rdquo; permet d&rsquo;initer une écoute en temps réel des modifications d&rsquo;un objet.</p><h3 id=objets-créés>Objets créés</h3><p><strong>Déploiements</strong></p><pre tabindex=0><code>kubectl get deployments
 </code></pre><pre tabindex=0><code>NAME    READY   UP-TO-DATE   AVAILABLE   AGE
 myapp   1/1     1            1           95s
-</code></pre><p>La sortie observer permet de connaitre l&rsquo;état du déploiment d&rsquo;un ou plusieurs pods. Le déploiement fournit des mises à jour déclaratives pour Pods et ReplicaSets. Il permet de décrire l&rsquo;état désiré et le controlleur du déploiement change l&rsquo;état réel à l&rsquo;état souhaité.</p>
-<p><strong>Replicasets</strong></p>
-<pre tabindex=0><code>kubectl get replicasets
+</code></pre><p>La sortie observer permet de connaitre l&rsquo;état du déploiment d&rsquo;un ou plusieurs pods. Le déploiement fournit des mises à jour déclaratives pour Pods et ReplicaSets. Il permet de décrire l&rsquo;état désiré et le controlleur du déploiement change l&rsquo;état réel à l&rsquo;état souhaité.</p><p><strong>Replicasets</strong></p><pre tabindex=0><code>kubectl get replicasets
 </code></pre><pre tabindex=0><code>NAME               DESIRED   CURRENT   READY   AGE
 myapp-5dcbf46dfc   1         1         1       2m1s
-</code></pre><p>La sortie observer permet de connaitre l&rsquo;état d&rsquo;un ensemble stable de Pods à un moment donné. Cet objet est souvent utilisé pour garantir la disponibilité d&rsquo;un certain nombre identique de Pods.</p>
-<p><strong>Pods</strong></p>
-<pre tabindex=0><code>kubectl get pods --show-labels
+</code></pre><p>La sortie observer permet de connaitre l&rsquo;état d&rsquo;un ensemble stable de Pods à un moment donné. Cet objet est souvent utilisé pour garantir la disponibilité d&rsquo;un certain nombre identique de Pods.</p><p><strong>Pods</strong></p><pre tabindex=0><code>kubectl get pods --show-labels
 </code></pre><pre tabindex=0><code>NAME                     READY   STATUS    RESTARTS   AGE     LABELS
 myapp-5dcbf46dfc-ghrk4   1/1     Running   0          2m18s   app=myapp,pod-template-hash=5dcbf46dfc
-</code></pre><p>La sortie observer permet de connaitre l&rsquo;état du pod. Les Pods sont les plus petites unités informatiques déployables qui peuvent être créées et gérées dans Kubernetes.</p>
-<p>Un pod (terme anglo-saxon décrivant un groupe de baleines ou une gousse de pois) est un groupe d&rsquo;un ou plusieurs conteneurs (comme des conteneurs Docker), ayant du stockage/réseau partagé, et une spécification sur la manière d&rsquo;exécuter ces conteneurs. Les éléments d&rsquo;un pod sont toujours co-localisés et co-ordonnancés, et s&rsquo;exécutent dans un contexte partagé. Un pod modélise un &ldquo;hôte logique&rdquo; spécifique à une application - il contient un ou plusieurs conteneurs applicatifs qui sont étroitement liés — dans un monde pré-conteneurs, être exécuté sur la même machine physique ou virtuelle signifierait être exécuté sur le même hôte logique.</p>
-<p><strong>Logs</strong></p>
-<pre tabindex=0><code>kubectl logs -l app=myapp
+</code></pre><p>La sortie observer permet de connaitre l&rsquo;état du pod. Les Pods sont les plus petites unités informatiques déployables qui peuvent être créées et gérées dans Kubernetes.</p><p>Un pod (terme anglo-saxon décrivant un groupe de baleines ou une gousse de pois) est un groupe d&rsquo;un ou plusieurs conteneurs (comme des conteneurs Docker), ayant du stockage/réseau partagé, et une spécification sur la manière d&rsquo;exécuter ces conteneurs. Les éléments d&rsquo;un pod sont toujours co-localisés et co-ordonnancés, et s&rsquo;exécutent dans un contexte partagé. Un pod modélise un &ldquo;hôte logique&rdquo; spécifique à une application - il contient un ou plusieurs conteneurs applicatifs qui sont étroitement liés — dans un monde pré-conteneurs, être exécuté sur la même machine physique ou virtuelle signifierait être exécuté sur le même hôte logique.</p><p><strong>Logs</strong></p><pre tabindex=0><code>kubectl logs -l app=myapp
 </code></pre><pre tabindex=0><code>2020-03-22 14:41:30,497 INFO  [io.quarkus] (main) Quarkus 0.22.0 started in 0.021s. Listening on: http://0.0.0.0:8080
 2020-03-22 14:41:30,497 INFO  [io.quarkus] (main) Installed features: [cdi, resteasy]
-</code></pre><h3 id=exposer-un-service>Exposer un service</h3>
-<pre tabindex=0><code>kubectl expose deployment myapp --port=8080 --type=LoadBalancer
-</code></pre><p><strong>terminal 2</strong></p>
-<pre tabindex=0><code>watch kubectl get services
+</code></pre><h3 id=exposer-un-service>Exposer un service</h3><pre tabindex=0><code>kubectl expose deployment myapp --port=8080 --type=LoadBalancer
+</code></pre><p><strong>terminal 2</strong></p><pre tabindex=0><code>watch kubectl get services
 </code></pre><pre tabindex=0><code>NAME    TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
 myapp   LoadBalancer   172.30.103.41   &lt;pending&gt;     8080:31974/TCP   4s
-</code></pre><p>Kubernetes ServiceTypesvous permet de spécifier le type de service que vous souhaitez. La valeur par défaut est ClusterIP.</p>
-<p>Type les valeurs et leurs comportements sont:</p>
-<ul>
-<li>
-<p>ClusterIP: Expose le service sur une IP interne au cluster. Le choix de cette valeur rend le service uniquement accessible à partir du cluster. C&rsquo;est la valeur par défaut ServiceType.</p>
-</li>
-<li>
-<p>NodePort: Expose le service sur l&rsquo;IP de chaque nœud à un port statique (le NodePort). Un ClusterIPservice, vers lequel le NodePortservice est acheminé, est automatiquement créé. Vous pourrez contacter le NodePortService, depuis l&rsquo;extérieur du cluster, en faisant la demande :.</p>
-</li>
-<li>
-<p>LoadBalancer: Expose le service en externe à l&rsquo;aide de l&rsquo;équilibreur de charge d&rsquo;un fournisseur de cloud. NodePortet les ClusterIPservices, vers lesquels les itinéraires de l&rsquo;équilibreur de charge externe, sont automatiquement créés.</p>
-</li>
-<li>
-<p>ExternalName: Mappe le service au contenu du externalNamechamp (par exemple foo.bar.example.com), en renvoyant un CNAME enregistrement avec sa valeur. Aucun mandataire d&rsquo;aucune sorte n&rsquo;est mis en place.</p>
-</li>
-</ul>
-<h3 id=parler-aux-applications>Parler aux applications</h3>
-<pre tabindex=0><code>IP=$(minikube ip)
-PORT=$(kubectl get service/myapp -o jsonpath=&quot;{.spec.ports[*].nodePort}&quot;)
-</code></pre><p>Bouclez le service :</p>
-<pre tabindex=0><code>curl $IP:$PORT
-</code></pre><p>Scalez l&rsquo;application</p>
-<p>terminal 2</p>
-<pre tabindex=0><code>watch kubectl get pods
-</code></pre><p>terminal 1</p>
-<pre tabindex=0><code>IP=$(kubectl get service myapp -o jsonpath=&quot;{.status.loadBalancer.ingress[0].ip}&quot;)
-PORT=$(kubectl get service myapp -o jsonpath=&quot;{.spec.ports[*].port}&quot;)
-</code></pre><p>Sondez le résultat :</p>
-<pre tabindex=0><code>while true
+</code></pre><p>Kubernetes ServiceTypesvous permet de spécifier le type de service que vous souhaitez. La valeur par défaut est ClusterIP.</p><p>Type les valeurs et leurs comportements sont:</p><ul><li><p>ClusterIP: Expose le service sur une IP interne au cluster. Le choix de cette valeur rend le service uniquement accessible à partir du cluster. C&rsquo;est la valeur par défaut ServiceType.</p></li><li><p>NodePort: Expose le service sur l&rsquo;IP de chaque nœud à un port statique (le NodePort). Un ClusterIPservice, vers lequel le NodePortservice est acheminé, est automatiquement créé. Vous pourrez contacter le NodePortService, depuis l&rsquo;extérieur du cluster, en faisant la demande :.</p></li><li><p>LoadBalancer: Expose le service en externe à l&rsquo;aide de l&rsquo;équilibreur de charge d&rsquo;un fournisseur de cloud. NodePortet les ClusterIPservices, vers lesquels les itinéraires de l&rsquo;équilibreur de charge externe, sont automatiquement créés.</p></li><li><p>ExternalName: Mappe le service au contenu du externalNamechamp (par exemple foo.bar.example.com), en renvoyant un CNAME enregistrement avec sa valeur. Aucun mandataire d&rsquo;aucune sorte n&rsquo;est mis en place.</p></li></ul><h3 id=parler-aux-applications>Parler aux applications</h3><pre tabindex=0><code>IP=$(minikube ip)
+PORT=$(kubectl get service/myapp -o jsonpath=&#34;{.spec.ports[*].nodePort}&#34;)
+</code></pre><p>Bouclez le service :</p><pre tabindex=0><code>curl $IP:$PORT
+</code></pre><p>Scalez l&rsquo;application</p><p>terminal 2</p><pre tabindex=0><code>watch kubectl get pods
+</code></pre><p>terminal 3</p><pre tabindex=0><code>sudo minikube tunnel
+</code></pre><p>terminal 1</p><pre tabindex=0><code>IP=$(kubectl get service myapp -o jsonpath=&#34;{.status.loadBalancer.ingress[0].ip}&#34;)
+PORT=$(kubectl get service myapp -o jsonpath=&#34;{.spec.ports[*].port}&#34;)
+</code></pre><p>Sondez le résultat :</p><pre tabindex=0><code>while true
 do curl $IP:$PORT
 sleep .3
 done
-</code></pre><p>Résultats du sondage :</p>
-<pre tabindex=0><code>Supersonic Subatomic Java with Quarkus myapp-5dcbf46dfc-ghrk4:289
+</code></pre><p>Résultats du sondage :</p><pre tabindex=0><code>Supersonic Subatomic Java with Quarkus myapp-5dcbf46dfc-ghrk4:289
 Supersonic Subatomic Java with Quarkus myapp-5dcbf46dfc-ghrk4:290
 Supersonic Subatomic Java with Quarkus myapp-5dcbf46dfc-ghrk4:291
 Supersonic Subatomic Java with Quarkus myapp-5dcbf46dfc-ghrk4:292
 Supersonic Subatomic Java with Quarkus myapp-5dcbf46dfc-ghrk4:293
 </code></pre><p>Terminal 3
-Changer les répliques :</p>
-<pre tabindex=0><code>kubectl scale deployment myapp --replicas=3
+Changer les répliques :</p><pre tabindex=0><code>kubectl scale deployment myapp --replicas=3
 </code></pre><pre tabindex=0><code>NAME                     READY   STATUS              RESTARTS   AGE
 myapp-5dcbf46dfc-6sn2s   0/1     ContainerCreating   0          4s
 myapp-5dcbf46dfc-ghrk4   1/1     Running             0          5m32s
 myapp-5dcbf46dfc-z6hqw   0/1     ContainerCreating   0          4s
-</code></pre><p>Commencez une mise à jour continue en changeant l&rsquo;image :</p>
-<pre tabindex=0><code>kubectl set image deployment/myapp quarkus-demo=quay.io/rhdevelopers/myboot:v1
+</code></pre><p>Commencez une mise à jour continue en changeant l&rsquo;image :</p><pre tabindex=0><code>kubectl set image deployment/myapp quarkus-demo=quay.io/rhdevelopers/myboot:v1
 </code></pre><pre tabindex=0><code>Supersonic Subatomic Java with Quarkus myapp-5dcbf46dfc-6sn2s:188
 Supersonic Subatomic Java with Quarkus myapp-5dcbf46dfc-z6hqw:169
 Aloha from Spring Boot! 0 on myapp-58b97dbd95-vxd87
@@ -394,32 +121,17 @@ Supersonic Subatomic Java with Quarkus myapp-5dcbf46dfc-7rkxj:3
 Supersonic Subatomic Java with Quarkus myapp-5dcbf46dfc-7lf9t:2
 Supersonic Subatomic Java with Quarkus myapp-5dcbf46dfc-7lf9t:3
 Supersonic Subatomic Java with Quarkus myapp-5dcbf46dfc-tcfwp:6
-</code></pre><h3 id=nettoyage>Nettoyage</h3>
-<pre tabindex=0><code>kubectl delete namespace mystuff
-kubectl config set-context --current --namespace=default</code></pre>
-<footer class=footline>
-</footer>
-</div>
-</div>
-<div id=navigation>
-<a class="nav nav-prev" href=/kubernetes-tutorial/kubernetes/d%C3%A9butant/ title=Débutant> <i class="fa fa-chevron-left"></i></a>
-<a class="nav nav-next" href=/kubernetes-tutorial/kubernetes/d%C3%A9butant/pod-replica-deployment/ title="Pod, Replicaset, Deployment" style=margin-right:0><i class="fa fa-chevron-right"></i></a>
-</div>
-</section>
-<div style=left:-1000px;overflow:scroll;position:absolute;top:-1000px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px>
-<div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div>
-</div>
-<script src=/kubernetes-tutorial/js/clipboard.min.js?1643529949></script>
-<script src=/kubernetes-tutorial/js/perfect-scrollbar.min.js?1643529949></script>
-<script src=/kubernetes-tutorial/js/perfect-scrollbar.jquery.min.js?1643529949></script>
-<script src=/kubernetes-tutorial/js/jquery.sticky.js?1643529949></script>
-<script src=/kubernetes-tutorial/js/featherlight.min.js?1643529949></script>
-<script src=/kubernetes-tutorial/js/highlight.pack.js?1643529949></script>
-<script>hljs.initHighlightingOnLoad()</script>
-<script src=/kubernetes-tutorial/js/modernizr.custom-3.6.0.js?1643529949></script>
-<script src=/kubernetes-tutorial/js/learn.js?1643529949></script>
-<script src=/kubernetes-tutorial/js/hugo-learn.js?1643529949></script>
-<script src=/kubernetes-tutorial/mermaid/mermaid.js?1643529949></script>
-<script>mermaid.initialize({startOnLoad:!0})</script>
-</body>
-</html>
+</code></pre><h3 id=nettoyage>Nettoyage</h3><pre tabindex=0><code>kubectl delete namespace mystuff
+kubectl config set-context --current --namespace=default
+</code></pre><footer class=footline></footer></div></div><div id=navigation><a class="nav nav-prev" href=/kubernetes-tutorial/kubernetes/d%C3%A9butant/ title=Débutant><i class="fa fa-chevron-left"></i></a>
+<a class="nav nav-next" href=/kubernetes-tutorial/kubernetes/d%C3%A9butant/pod-replica--deployment/ title="Pod, Replicaset, Deployment" style=margin-right:0><i class="fa fa-chevron-right"></i></a></div></section><div style=left:-1000px;overflow:scroll;position:absolute;top:-1000px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px><div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div></div><script src=/kubernetes-tutorial/js/clipboard.min.js?1657096699></script>
+<script src=/kubernetes-tutorial/js/perfect-scrollbar.min.js?1657096699></script>
+<script src=/kubernetes-tutorial/js/perfect-scrollbar.jquery.min.js?1657096699></script>
+<script src=/kubernetes-tutorial/js/jquery.sticky.js?1657096699></script>
+<script src=/kubernetes-tutorial/js/featherlight.min.js?1657096699></script>
+<script src=/kubernetes-tutorial/js/highlight.pack.js?1657096699></script>
+<script>hljs.initHighlightingOnLoad()</script><script src=/kubernetes-tutorial/js/modernizr.custom-3.6.0.js?1657096699></script>
+<script src=/kubernetes-tutorial/js/learn.js?1657096699></script>
+<script src=/kubernetes-tutorial/js/hugo-learn.js?1657096699></script>
+<script src=/kubernetes-tutorial/mermaid/mermaid.js?1657096699></script>
+<script>mermaid.initialize({startOnLoad:!0})</script></body></html>
