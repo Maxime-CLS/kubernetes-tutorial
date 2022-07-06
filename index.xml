@@ -20,7 +20,7 @@ env: dev
 spec:
 containers:
 - name: quarkus-demo
-image: quay.</description></item><item><title>Kubectl</title><link>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/d%C3%A9butant/kubectl/</link><pubDate>Fri, 26 Jun 2020 15:17:20 +0200</pubDate><guid>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/d%C3%A9butant/kubectl/</guid><description>Prérequis Minikube Install Driver none kubectl Install Stern Docs Release jq Install 3 terminal SSH Parlez à votre Cluster echo $KUBECONFIG
+image: quay.</description></item><item><title>Kubectl</title><link>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/d%C3%A9butant/kubectl/</link><pubDate>Fri, 26 Jun 2020 15:17:20 +0200</pubDate><guid>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/d%C3%A9butant/kubectl/</guid><description>Prérequis Minikube Install Driver none kubectl Install Stern Docs Release jq Install 3 terminal SSH Démarrer le cluster Kubernetes sudo minikuube start --driver=none --kubernetes-version=v1.22.2 Parlez à votre Cluster echo $KUBECONFIG
 kubectl config view Affiche les paramètres fusionnés de kubeconfig
 Vue du noeud kubectl get nodes
 kubectl get nodes --show-labels
