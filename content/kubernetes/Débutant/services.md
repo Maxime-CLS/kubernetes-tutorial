@@ -130,3 +130,184 @@ curl $IP:$PORT
 ```
 Supersonic Subatomic Java with Quarkus quarkus-demo-deployment-5979886fb7-grf59:1
 ```
+
+### A vous de jouez !
+
+Créer des services pour les déploiements existants
+
+```
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: nginx-conf
+data:
+  nginx.conf: |
+    user nginx;
+    worker_processes  3;
+    error_log  /var/log/nginx/error.log;
+    events {
+      worker_connections  10240;
+    }
+    http {
+      server {
+          listen       80;
+          server_name  _;
+          root   /usr/share/nginx/html;
+          index  index.html index.htm;
+
+          location /europe {
+              alias /usr/share/nginx/html/;
+              index  index.html index.html;
+          }
+          location /asia {
+              alias /usr/share/nginx/html/;
+              index  index.html index.html;
+          }
+          location / {
+              root   /usr/share/nginx/html;
+              index  index.html index.htm;
+          }
+      }
+    }
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: europe
+  name: europe
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 2
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: europe
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: europe
+    spec:
+      containers:
+      - image: nginx:1.21.5-alpine
+        imagePullPolicy: IfNotPresent
+        name: c
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /usr/share/nginx/html
+          name: html
+        - mountPath: /etc/nginx
+          name: nginx-conf
+          readOnly: true
+      dnsPolicy: ClusterFirst
+      initContainers:
+      - command:
+        - sh
+        - -c
+        - echo 'hello, you reached EUROPE' > /html/index.html
+        image: busybox:1.28
+        imagePullPolicy: IfNotPresent
+        name: init-container
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /html
+          name: html
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - emptyDir: {}
+        name: html
+      - configMap:
+          defaultMode: 420
+          items:
+          - key: nginx.conf
+            path: nginx.conf
+          name: nginx-conf
+        name: nginx-conf
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: asia
+  name: asia
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 2
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: asia
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: asia
+    spec:
+      containers:
+      - image: nginx:1.21.5-alpine
+        imagePullPolicy: IfNotPresent
+        name: c
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /usr/share/nginx/html
+          name: html
+        - mountPath: /etc/nginx
+          name: nginx-conf
+          readOnly: true
+      dnsPolicy: ClusterFirst
+      initContainers:
+      - command:
+        - sh
+        - -c
+        - echo 'hello, you reached ASIA' > /html/index.html
+        image: busybox:1.28
+        imagePullPolicy: IfNotPresent
+        name: init-container
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /html
+          name: html
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - emptyDir: {}
+        name: html
+      - configMap:
+          defaultMode: 420
+          items:
+          - key: nginx.conf
+            path: nginx.conf
+          name: nginx-conf
+        name: nginx-conf
+```
+
+Il existe maintenant deux déploiements dans le namespace par défaut être rendus accessibles via une entrée.
+
+Premièrement : créer des services LoadBalancer pour les deux déploiements sur le port 30291 et 30292 et le target-port 80. Les services doivent porter le même nom que les déploiements.
+
+

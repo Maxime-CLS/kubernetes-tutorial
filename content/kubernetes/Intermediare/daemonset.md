@@ -114,3 +114,17 @@ Supprimer les ressources
 ```
 kubectl delete -f apps/kubefiles/quarkus-daemonset.yaml
 ```
+
+
+### A vous de jouer !!!
+
+Dans K8s, les DaemonSets sont souvent utilisés pour configurer certaines choses sur les nœuds.
+
+Créez un DaemonSet nommé configurator, il doit :
+
+être dans l'espace de noms configurator  
+utiliser l'image bash  
+monter /configurator en tant que volume HostPath sur le nœud sur lequel il s'exécute  
+écrire aba997ac-1c89-4d64 dans le fichier /configurator/config sur son nœud via la commande : section  
+être maintenu en fonctionnement à l'aide de sleep 1d ou d'une commande similaire après la commande d'écriture du fichier.  
+Il n'y a pas de taint sur aucun nœud, ce qui signifie qu'aucune tolérance n'est nécessaire.

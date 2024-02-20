@@ -446,3 +446,17 @@ Supprimer les ressources
 ```
 kubectl delete deployment myboot
 ```
+
+
+### A vous de jouez !
+
+Créer un déploiement avec une ReadinessProbe
+
+Créez un déploiement nommé space-alien-welcome-message-generator d'image httpd:alpine avec 1 replica.
+
+Il devrait avoir un ReadinessProbe qui exécute la commande stat /tmp/ready. Cela signifie qu'une fois que le fichier existe, le pod doit être prêt.
+
+Les valeurs initialDelaySeconds et periodSeconds doivent être respectivement de 10 et 5.
+
+Créez le déploiement et observez que le module n'est pas prêt.
+

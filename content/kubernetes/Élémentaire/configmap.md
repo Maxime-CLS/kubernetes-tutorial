@@ -306,3 +306,25 @@ kubectl delete deployment myboot
 kubectl delete cm my-config
 kubectl delete service myboot
 ```
+
+### A vous de jouez !
+
+Créer un ConfigMap 
+
+Créer un ConfigMap nommé trauerweide avec le contenu tree=trauerweide
+Créer le ConfigMap stocké dans le fichier existant /root/cm.yaml
+
+
+Voici le contenu du fichier cm.yaml
+
+```
+apiVersion: v1
+data:
+  tree: birke
+  level: "3"
+  department: park
+kind: ConfigMap
+metadata:
+  name: birke
+```
+

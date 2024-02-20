@@ -13,6 +13,8 @@ weight: 5
 - jq [Install](https://stedolan.github.io/jq/download/)
 - 3 terminal SSH
 
+Cette section ne fonctionne pas sur MacOs. Vous devez absolument être sur une machine Linux.
+
 ## Activer le contrôleur d'entrée
 
 Si vous utilisez minikube, vous devez activer le contrôleur NGNIX Ingress.
@@ -65,7 +67,7 @@ Exposez le service :
 
 
 ```
-kubectl expose deployment quarkus-demo-deployment --type=NodePort --port=8080
+kubectl expose deployment quarkus-demo-deployment --type=LoadBalancer --port=8080
 
 kubectl get service quarkus-demo-deployment
 ```
@@ -76,8 +78,8 @@ quarkus-demo-deployment   NodePort   10.105.106.66   <none>        8080:30408/TC
 ```
 
 ```
-IP=$(minikube ip)
-PORT=$(kubectl get service/quarkus-demo-deployment -o jsonpath="{.spec.ports[*].nodePort}")
+IP=$(kubectl get service myapp -o jsonpath="{.status.loadBalancer.ingress[0].ip}")
+PORT=$(kubectl get service myapp -o jsonpath="{.spec.ports[*].port}")
 ```
 
 Réaliser une requete sur le service :
@@ -153,13 +155,13 @@ sudo vim /etc/hosts
 ```
 
 ```
-curl kube-devnation.info
+curl kube-team.info
 ```
 
 Si vous avez un proxy :
 
 ```
-curl --noproxy kube-devnation.info kube-devnation.info
+curl --noproxy kube-team.info kube-team.info
 ```
 
 ```

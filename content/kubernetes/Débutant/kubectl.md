@@ -7,23 +7,137 @@ weight: 5
 
 ## Prérequis
 
+- Une machine Linux Ubuntu ou Debian 
+- 8 CPU, 16GB RAM, 100GB Disk
 - Minikube [Install](https://kubernetes.io/fr/docs/tasks/tools/install-minikube/#installez-minikube-par-t%C3%A9l%C3%A9chargement-direct)  [Driver none](https://kubernetes.io/docs/setup/learning-environment/minikube/#specifying-the-vm-driver)
 - kubectl [Install](https://kubernetes.io/fr/docs/tasks/tools/install-kubectl/)
 - Stern [Docs](https://kubernetes.io/blog/2016/10/tail-kubernetes-with-stern/) [Release](https://github.com/wercker/stern/releases)
 - jq [Install](https://stedolan.github.io/jq/download/)
 - 3 terminal SSH
 
-### Démarrer le cluster Kubernetes
+### Installation de minikube
+
+#### Linux
 
 ```
-sudo minikube start --driver=none --kubernetes-version=v1.22.2
+mkdir bin && cd bin
+curl -Lo minikube https://storage.googleapis.com/minikube/releases/v1.26.1/minikube-linux-amd64
+chmod +x minikube
+curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.26.1/bin/linux/amd64/kubectl
+chmod +x kubectl
+cd ..
 ```
+
+#### MacOs 
+
+```
+mkdir bin && cd bin
+curl -Lo minikube https://storage.googleapis.com/minikube/releases/v1.26.1/minikube-darwin-amd64
+chmod +x minikube
+curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.26.1/bin/darwin/amd64/kubectl
+chmod +x kubectl
+cd ..
+```
+
+Et ajouter les variables d'environnement : 
+
+```
+export MINIKUBE_HOME=$TUTORIAL_HOME;
+export PATH=$MINIKUBE_HOME/bin:$PATH
+export KUBECONFIG=$MINIKUBE_HOME/.kube/config
+export KUBE_EDITOR="code -w"
+```
+
+Conserver les paramètres de Vim dans .vimrc
+
+Nous examinons les paramètres importants de Vim si vous souhaitez travailler avec YAML pendant le TP K8s.
+
+**Paramètres**
+
+Créez d'abord ou ouvrez (s'il existe déjà) le fichier .vimrc :
+
+```
+vim ~/.vimrc
+```
+
+Saisissez ensuite (en mode insertion activé avec i) les lignes suivantes :
+
+```
+alias k=kubectl
+```
+
+Sauvegardez et fermez le fichier en appuyant sur Esc suivi de :x et Enter.
+
+### Démarrer le cluster Kubernetes
+
+#### Linux
+
+```
+minikube start --memory=8192 --cpus=3 --kubernetes-version=v1.26.1 --vm-driver=docker
+```
+
 Avec un proxy :
 
 ```
-minikube start --docker-env HTTPS_PROXY=$HTTPS_PROXY --docker-env HTTP_PROXY=$HTTP_PROXY --docker-env=NO_PROXY=$NO_PROXY --kubernetes-version=v1.22.2
+minikube start --memory=8192 --cpus=3 --docker-env HTTPS_PROXY=$HTTPS_PROXY --docker-env HTTP_PROXY=$HTTP_PROXY --docker-env=NO_PROXY=$NO_PROXY --kubernetes-version=v1.26.1 --vm-driver=docker
 ```
 
+
+#### MacOs 
+
+```
+minikube start --memory=8192 --cpus=3 --kubernetes-version=v1.26.1 --vm-driver=docker
+```
+
+Avec un proxy :
+
+```
+minikube start --memory=8192 --cpus=3 --docker-env HTTPS_PROXY=$HTTPS_PROXY --docker-env HTTP_PROXY=$HTTP_PROXY --docker-env=NO_PROXY=$NO_PROXY --kubernetes-version=v1.26.1 --vm-driver=docker
+```
+
+Et le résultat doit être quelque chose de similaire :
+
+```
+😄  [devnation] minikube v1.20.0 on Darwin 11.3
+✅  Created a new profile : devnation
+✅  minikube profile was successfully set to devnation
+😄  [default] minikube v1.29.0 on Darwin 11.3
+✨  Selecting 'virtualbox' driver from user configuration (alternates: [hyperkit])
+🔥  Creating virtualbox VM (CPUs=2, Memory=8192MB, Disk=50000MB) ...
+🐳  Preparing Kubernetes v1.26.1 on Docker '20.10.6' ...
+    ▪ apiserver.enable-admission-plugins=LimitRanger,NamespaceExists,NamespaceLifecycle,ResourceQuota,ServiceAccount,DefaultStorageClass,MutatingAdmissionWebhook
+🚜  Pulling images ...
+🚀  Launching Kubernetes ...
+⌛  Waiting for cluster to come online ...
+🏄  Done! kubectl is now configured to use "devnation"
+```
+
+Enfin, configurez l'utilisation de minikube internal docker comme docker host :
+
+```
+eval $(minikube docker-env)
+```
+
+### Installation de l'ingress controller 
+
+```
+minikube addons enable ingress
+```
+
+Vérifier que l'ingress controller est bien installé :
+
+``` 
+kubectl get pods -n ingress-nginx
+```
+
+Résultat :
+
+```
+NAME                                        READY   STATUS      RESTARTS    AGE
+ingress-nginx-admission-create-g9g49        0/1     Completed   0          11m
+ingress-nginx-admission-patch-rqp78         0/1     Completed   1          11m
+ingress-nginx-controller-59b45fb494-26npt   1/1     Running     0          11m
+```
 
 ### Parlez à votre Cluster
 
@@ -195,24 +309,6 @@ Type les valeurs et leurs comportements sont:
 
 ### Parler aux applications
 
-```
-IP=$(minikube ip)
-PORT=$(kubectl get service/myapp -o jsonpath="{.spec.ports[*].nodePort}")
-```
-
-Bouclez le service :
-
-```
-curl $IP:$PORT
-```
-
-Scalez l'application
-
-terminal 2
-```
-watch kubectl get pods
-```
-
 terminal 3
 
 ```
@@ -313,3 +409,4 @@ Supersonic Subatomic Java with Quarkus myapp-5dcbf46dfc-tcfwp:6
 ```
 kubectl delete namespace mystuff
 kubectl config set-context --current --namespace=default
+```

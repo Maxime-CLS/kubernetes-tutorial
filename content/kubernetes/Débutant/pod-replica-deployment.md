@@ -245,3 +245,18 @@ kubectl exec -it quarkus-demo-deployment-5979886fb7-c888m -- curl localhost:8080
 ```
 Supersonic Subatomic Java with Quarkus quarkus-demo-deployment-5979886fb7-c888m:1
 ```
+
+### A vous de jouez !
+
+Créer un pod avec des Resource Requests et Limits
+
+Créer un namespace de noms limit.  
+
+Dans ce Namespace, créez un Pod nommé resource-checker de l'image httpd:alpine.  
+
+Le conteneur doit être nommé my-container.  
+
+Il doit demander 30m de CPU et être limité à 300m de CPU.
+
+Il doit demander 30Mi de mémoire et être limité à 30Mi de mémoire.
+

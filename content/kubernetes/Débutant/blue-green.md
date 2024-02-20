@@ -235,3 +235,64 @@ kubectl delete service myboot
 kubectl delete deployment myboot
 kubectl delete deployment myboot-next
 ```
+
+
+### A vous de jouer !
+
+Effectuer un déploiement Green-Blue d'une application.
+
+Déployer l'application suivante : 
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: wonderful
+  name: wonderful-v1
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: wonderful
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: wonderful
+        version: v1
+    spec:
+      containers:
+      - image: httpd:alpine
+        name: httpd
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: wonderful
+  name: wonderful
+spec:
+  ports:
+  - port: 30290
+    protocol: TCP
+    targetPort: 30290
+  selector:
+    app: wonderful
+    version: v1
+  type: LoadBalancer
+```
+
+L'application "wonderful" est exécutée dans le namespace par défaut.
+
+Vous pouvez appeler l'application en utilisant curl localhost:30290 .
+
+L'application a un déploiement avec l'image httpd:alpine , mais devrait être basculée sur nginx:alpine .
+
+Le basculement doit se faire instantanément. Cela signifie qu'à partir du moment où l'application est déployée, toutes les nouvelles requêtes doivent utiliser la nouvelle image.
+
+Créer un nouveau Deployment wonderful-v2 qui utilise l'image nginx:alpine avec 4 répliques. Ses Pods doivent avoir les labels app : wonderful et version : v2.
+
+Une fois que tous les nouveaux Pods sont en cours d'exécution, changez l'étiquette du sélecteur du Service wonderful en version : v2.
+
+Enfin, réduire le déploiement wonderful-v1 à 0 réplicas.
