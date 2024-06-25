@@ -9,9 +9,9 @@ weight: 5
 
 - Une machine Linux Ubuntu ou Debian 
 - 8 CPU, 16GB RAM, 100GB Disk
-- Minikube [Install](https://kubernetes.io/fr/docs/tasks/tools/install-minikube/#installez-minikube-par-t%C3%A9l%C3%A9chargement-direct)  [Driver none](https://kubernetes.io/docs/setup/learning-environment/minikube/#specifying-the-vm-driver)
+- Minikube [Install](https://kubernetes.io/fr/docs/tasks/tools/install-minikube/#installez-minikube-par-t%C3%A9l%C3%A9chargement-direct) 
 - kubectl [Install](https://kubernetes.io/fr/docs/tasks/tools/install-kubectl/)
-- Stern [Docs](https://kubernetes.io/blog/2016/10/tail-kubernetes-with-stern/) [Release](https://github.com/wercker/stern/releases)
+- Stern [Docs](https://kubernetes.io/blog/2016/10/tail-kubernetes-with-stern/) [Release](https://github.com/stern/stern/releases)
 - jq [Install](https://stedolan.github.io/jq/download/)
 - 3 terminal SSH
 
@@ -21,7 +21,7 @@ weight: 5
 
 ```
 mkdir bin && cd bin
-curl -Lo minikube https://storage.googleapis.com/minikube/releases/v1.26.1/minikube-linux-amd64
+curl -Lo minikube https://storage.googleapis.com/minikube/releases/v1.29.0/minikube-darwin-amd64
 chmod +x minikube
 curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.26.1/bin/linux/amd64/kubectl
 chmod +x kubectl
@@ -32,7 +32,7 @@ cd ..
 
 ```
 mkdir bin && cd bin
-curl -Lo minikube https://storage.googleapis.com/minikube/releases/v1.26.1/minikube-darwin-amd64
+curl -Lo minikube https://storage.googleapis.com/minikube/releases/v1.29.0/minikube-darwin-amd64
 chmod +x minikube
 curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.26.1/bin/darwin/amd64/kubectl
 chmod +x kubectl
