@@ -21,7 +21,7 @@ weight: 5
 
 ```
 mkdir bin && cd bin
-curl -Lo minikube https://storage.googleapis.com/minikube/releases/v1.29.0/minikube-darwin-amd64
+curl -Lo minikube https://storage.googleapis.com/minikube/releases/v1.29.0/minikube-linux-amd64
 chmod +x minikube
 curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.26.1/bin/linux/amd64/kubectl
 chmod +x kubectl
