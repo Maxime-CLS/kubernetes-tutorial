@@ -9,7 +9,7 @@ weight: 30
 
 - Minikube [Install](https://kubernetes.io/fr/docs/tasks/tools/install-minikube/#installez-minikube-par-t%C3%A9l%C3%A9chargement-direct)  [Driver none](https://kubernetes.io/docs/setup/learning-environment/minikube/#specifying-the-vm-driver)
 - kubectl [Install](https://kubernetes.io/fr/docs/tasks/tools/install-kubectl/)
-- Stern [Docs](https://kubernetes.io/blog/2016/10/tail-kubernetes-with-stern/) [Release](https://github.com/wercker/stern/releases)
+- Stern [Docs](https://kubernetes.io/blog/2016/10/tail-kubernetes-with-stern/) [Release](https://github.com/stern/stern/releases)
 - jq [Install](https://stedolan.github.io/jq/download/)
 - 3 terminal SSH
 
