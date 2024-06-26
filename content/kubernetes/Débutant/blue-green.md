@@ -190,6 +190,12 @@ spec:
             cpu: "1000m" # 1 core
 ```
 
+Déployer la version 2 de l'applciation myboot
+
+```
+kubectl apply -f apps/kubefiles/myboot-deployment-resources-limits-v2.yml
+```
+
 Vérifiez que le nouveau pod/déploiement porte le nouveau code :
 
 ```
