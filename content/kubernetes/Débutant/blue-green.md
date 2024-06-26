@@ -291,7 +291,23 @@ spec:
 
 L'application "wonderful" est exécutée dans le namespace par défaut.
 
-Vous pouvez appeler l'application en utilisant curl localhost:30290 .
+Créer les variables d'environnement IP et Port
+
+```
+IP=$(minikube ip)
+PORT=$(kubectl get service/wonderful -o jsonpath="{.spec.ports[*].nodePort}")
+```
+
+Vous pouvez appeler l'application en utilisant curl $IP:$PORT .
+
+Et maintenant créer une boucle de requete
+
+```
+while true
+do curl $IP:$PORT
+sleep .3
+done
+```
 
 L'application a un déploiement avec l'image httpd:alpine , mais devrait être basculée sur nginx:alpine .
 
