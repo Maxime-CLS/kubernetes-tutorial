@@ -312,7 +312,7 @@ kubectl delete service myboot
 Votre objectif est de créer un ConfigMap !
 
 Ce ConfigMap doit avoir :
-  - Le nom de la ressource doit être : trauerweide
+  - Un nom de la ressource égale à trauerweide
   - La configuration doit contenir : tree=trauerweide
 
 
