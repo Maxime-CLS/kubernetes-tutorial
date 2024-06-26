@@ -316,16 +316,3 @@ Ce ConfigMap doit avoir :
   - La configuration doit contenir : tree=trauerweide
 
 
-Voici le contenu du fichier cm.yaml
-
-```
-apiVersion: v1
-data:
-  tree: birke
-  level: "3"
-  department: park
-kind: ConfigMap
-metadata:
-  name: birke
-```
-
