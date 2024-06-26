@@ -42,7 +42,7 @@ cd ..
 Et ajouter les variables d'environnement : 
 
 ```
-export MINIKUBE_HOME=$TUTORIAL_HOME;
+export MINIKUBE_HOME=$(pwd);
 export PATH=$MINIKUBE_HOME/bin:$PATH
 export KUBECONFIG=$MINIKUBE_HOME/.kube/config
 export KUBE_EDITOR="code -w"
