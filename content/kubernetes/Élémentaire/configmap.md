@@ -309,10 +309,11 @@ kubectl delete service myboot
 
 ### A vous de jouez !
 
-Créer un ConfigMap 
+Votre objectif est de créer un ConfigMap !
 
-Créer un ConfigMap nommé trauerweide avec le contenu tree=trauerweide
-Créer le ConfigMap stocké dans le fichier existant /root/cm.yaml
+Ce ConfigMap doit :
+  - La ressource doit portée le nom : trauerweide
+  - La configuration doit contenir : tree=trauerweide
 
 
 Voici le contenu du fichier cm.yaml
