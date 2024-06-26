@@ -282,7 +282,7 @@ spec:
   ports:
   - port: 30290
     protocol: TCP
-    targetPort: 30290
+    targetPort: 80
   selector:
     app: wonderful
     version: v1
