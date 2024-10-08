@@ -98,7 +98,7 @@ spec:
  memory: &amp;#34;300Mi&amp;#34;
  cpu: &amp;#34;250m&amp;#34; # 1/4 core
  limits:
- memory: &amp;#34;400Mi&amp;#34;
+ memory: &amp;#34;800Mi&amp;#34;
  cpu: &amp;#34;1000m&amp;#34; # 1 core
  livenessProbe:
  httpGet:
