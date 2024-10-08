@@ -312,21 +312,24 @@ Type les valeurs et leurs comportements sont:
 terminal 3
 
 ```
-sudo minikube tunnel
+minikube service myapp --url -n mystuff
+```
+
+```
+http://127.0.0.1:54134
 ```
 
 terminal 1 
 
 ```
-IP=$(kubectl get service myapp -o jsonpath="{.status.loadBalancer.ingress[0].ip}")
-PORT=$(kubectl get service myapp -o jsonpath="{.spec.ports[*].port}")
+URL=http://127.0.0.1:54134
 ```
 
 Sondez le résultat :
 
 ```
 while true
-do curl $IP:$PORT
+do curl $URL
 sleep .3
 done
 ```
