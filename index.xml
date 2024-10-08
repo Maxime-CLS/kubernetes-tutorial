@@ -145,7 +145,7 @@ kubectl apply -f apps/kubefiles/myboot-service.yml
 &lt;/code>&lt;/pre>&lt;p>Terminal 1 : regardez les Pods.&lt;/p>
 &lt;pre tabindex="0">&lt;code>watch kubectl get pods
 &lt;/code>&lt;/pre>&lt;p>Terminal 2: curl loop the service.&lt;/p>
-&lt;pre tabindex="0">&lt;code>IP=$(minikube ip -p devnation)
+&lt;pre tabindex="0">&lt;code>IP=$(minikube ip)
 PORT=$(kubectl get service/myboot -o jsonpath=&amp;#34;{.spec.ports[*].nodePort}&amp;#34;)
 &lt;/code>&lt;/pre>&lt;p>Réaliser une requete sur le service :&lt;/p>
 &lt;pre tabindex="0">&lt;code>curl $IP:$PORT
