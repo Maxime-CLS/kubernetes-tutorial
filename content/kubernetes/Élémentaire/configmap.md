@@ -239,6 +239,8 @@ Ou vous pouvez décrire l'objet ConfigMap :
 kubectl describe cm my-config
 ```
 
+
+
 ```
 Name:         my-config
 Namespace:    myspace
@@ -255,6 +257,46 @@ LOVE:
 Amour
 Events:  <none>
 
+```
+
+Créer un fichier de déploiement :
+
+```
+vi apps/kubefiles/myboot-deployment-configuration.yml
+```
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: myboot
+  name: myboot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myboot
+  template:
+    metadata:
+      labels:
+        app: myboot
+    spec:
+      containers:
+      - name: myboot
+        image: quay.io/rhdevelopers/myboot:v1  
+        ports:
+          - containerPort: 8080
+        envFrom:
+        - configMapRef:
+            name: my-config
+        resources:
+          requests: 
+            memory: "300Mi" 
+            cpu: "250m" # 1/4 core
+          limits:
+            memory: "400Mi"
+            cpu: "1000m" # 1 core
 ```
 
 Maintenant, déployez l'application avec sa requête pour le ConfigMap :
