@@ -1,4 +1,42 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Avancé on Kubernetes Tutoriel</title><link>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/avance/</link><description>Recent content in Avancé on Kubernetes Tutoriel</description><generator>Hugo</generator><language>fr-FR</language><lastBuildDate>Fri, 26 Jun 2020 15:17:20 +0200</lastBuildDate><atom:link href="https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/avance/index.xml" rel="self" type="application/rss+xml"/><item><title>Ingress</title><link>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/avance/ingress/</link><pubDate>Fri, 26 Jun 2020 15:17:20 +0200</pubDate><guid>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/avance/ingress/</guid><description>Prérequis Minikube Install Driver none kubectl Install Stern Docs Release jq Install 3 terminal SSH Cette section ne fonctionne pas sur MacOs. Vous devez absolument être sur une machine Linux.
-Activer le contrôleur d&amp;rsquo;entrée Si vous utilisez minikube, vous devez activer le contrôleur NGNIX Ingress.
-minikube addons enable ingress Attendez une minute ou deux et vérifiez qu&amp;rsquo;il a été déployé correctement :
-kubectl get pods -n ingress-nginx ingress-nginx-admission-create-lqfh2 0/1 Completed 0 6m28singress-nginx-admission-patch-z2lzj 0/1 Completed 2 6m28singress-nginx-controller-69ccf5d9d8-95xgp 1/1 Running 0 6m28s Déployer l&amp;rsquo;application cat &amp;lt;&amp;lt;EOF | kubectl apply -f -apiVersion: apps/v1kind: Deploymentmetadata:name: quarkus-demo-deploymentspec:replicas: 1selector:matchLabels:app: quarkus-demotemplate:metadata:labels:app: quarkus-demoenv: devspec:containers:- name: quarkus-demoimage: quay.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Avancé on Kubernetes Tutoriel</title><link>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/avance/</link><description>Recent content in Avancé on Kubernetes Tutoriel</description><generator>Hugo</generator><language>fr-FR</language><lastBuildDate>Fri, 26 Jun 2020 15:17:20 +0200</lastBuildDate><atom:link href="https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/avance/index.xml" rel="self" type="application/rss+xml"/><item><title>Ingress</title><link>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/avance/ingress/</link><pubDate>Fri, 26 Jun 2020 15:17:20 +0200</pubDate><guid>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/avance/ingress/</guid><description>&lt;h2 id="prérequis">Prérequis&lt;/h2>
+&lt;ul>
+&lt;li>Minikube &lt;a href="https://kubernetes.io/fr/docs/tasks/tools/install-minikube/#installez-minikube-par-t%C3%A9l%C3%A9chargement-direct">Install&lt;/a> &lt;a href="https://kubernetes.io/docs/setup/learning-environment/minikube/#specifying-the-vm-driver">Driver none&lt;/a>&lt;/li>
+&lt;li>kubectl &lt;a href="https://kubernetes.io/fr/docs/tasks/tools/install-kubectl/">Install&lt;/a>&lt;/li>
+&lt;li>Stern &lt;a href="https://kubernetes.io/blog/2016/10/tail-kubernetes-with-stern/">Docs&lt;/a> &lt;a href="https://github.com/stern/stern/releases">Release&lt;/a>&lt;/li>
+&lt;li>jq &lt;a href="https://stedolan.github.io/jq/download/">Install&lt;/a>&lt;/li>
+&lt;li>3 terminal SSH&lt;/li>
+&lt;/ul>
+&lt;p>Cette section ne fonctionne pas sur MacOs. Vous devez absolument être sur une machine Linux.&lt;/p>
+&lt;h2 id="activer-le-contrôleur-dentrée">Activer le contrôleur d&amp;rsquo;entrée&lt;/h2>
+&lt;p>Si vous utilisez minikube, vous devez activer le contrôleur NGNIX Ingress.&lt;/p>
+&lt;pre tabindex="0">&lt;code>minikube addons enable ingress
+&lt;/code>&lt;/pre>&lt;p>Attendez une minute ou deux et vérifiez qu&amp;rsquo;il a été déployé correctement :&lt;/p>
+&lt;pre tabindex="0">&lt;code>kubectl get pods -n ingress-nginx
+&lt;/code>&lt;/pre>&lt;pre tabindex="0">&lt;code>ingress-nginx-admission-create-lqfh2 0/1 Completed 0 6m28s
+ingress-nginx-admission-patch-z2lzj 0/1 Completed 2 6m28s
+ingress-nginx-controller-69ccf5d9d8-95xgp 1/1 Running 0 6m28s
+&lt;/code>&lt;/pre>&lt;h2 id="déployer-lapplication">Déployer l&amp;rsquo;application&lt;/h2>
+&lt;pre tabindex="0">&lt;code>cat &amp;lt;&amp;lt;EOF | kubectl apply -f -
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: quarkus-demo-deployment
+spec:
+ replicas: 1
+ selector:
+ matchLabels:
+ app: quarkus-demo
+ template:
+ metadata:
+ labels:
+ app: quarkus-demo
+ env: dev
+ spec:
+ containers:
+ - name: quarkus-demo
+ image: quay.io/rhdevelopers/quarkus-demo:v1
+ imagePullPolicy: Always
+ ports:
+ - containerPort: 8080
+EOF
+&lt;/code>&lt;/pre>&lt;p>Exposez le service :&lt;/p></description></item></channel></rss>

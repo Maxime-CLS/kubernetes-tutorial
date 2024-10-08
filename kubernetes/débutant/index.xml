@@ -1,13 +1,190 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Débutant on Kubernetes Tutoriel</title><link>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/d%C3%A9butant/</link><description>Recent content in Débutant on Kubernetes Tutoriel</description><generator>Hugo</generator><language>fr-FR</language><lastBuildDate>Fri, 26 Jun 2020 15:17:20 +0200</lastBuildDate><atom:link href="https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/d%C3%A9butant/index.xml" rel="self" type="application/rss+xml"/><item><title>Kubectl</title><link>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/d%C3%A9butant/kubectl/</link><pubDate>Fri, 26 Jun 2020 15:17:20 +0200</pubDate><guid>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/d%C3%A9butant/kubectl/</guid><description>Prérequis Une machine Linux Ubuntu ou Debian 8 CPU, 16GB RAM, 100GB Disk Minikube Install kubectl Install Stern Docs Release jq Install 3 terminal SSH Installation de minikube Linux mkdir bin &amp;amp;&amp;amp; cd bincurl -Lo minikube https://storage.googleapis.com/minikube/releases/v1.29.0/minikube-linux-amd64chmod +x minikubecurl -LO https://storage.googleapis.com/kubernetes-release/release/v1.26.1/bin/linux/amd64/kubectlchmod +x kubectlcd .. MacOs mkdir bin &amp;amp;&amp;amp; cd bincurl -Lo minikube https://storage.googleapis.com/minikube/releases/v1.29.0/minikube-darwin-amd64chmod +x minikubecurl -LO https://storage.googleapis.com/kubernetes-release/release/v1.26.1/bin/darwin/amd64/kubectlchmod +x kubectlcd .. Et ajouter les variables d&amp;rsquo;environnement :</description></item><item><title>Pod, Replicaset, Deployment</title><link>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/d%C3%A9butant/pod-replica-deployment/</link><pubDate>Fri, 26 Jun 2020 15:17:20 +0200</pubDate><guid>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/d%C3%A9butant/pod-replica-deployment/</guid><description>Prérequis Minikube Install Driver none kubectl Install Stern Docs Release jq Install 3 terminal SSH Commencez par créer un espace de noms dans lequel vous pourrez travailler :
-kubectl create namespace myspacekubectl config set-context --current --namespace=myspace Pod Créer un naked pod :
-cat &amp;lt;&amp;lt;EOF | kubectl apply -f -apiVersion: v1kind: Podmetadata:name: quarkus-demospec:containers:- name: quarkus-demoimage: quay.io/rhdevelopers/quarkus-demo:v1EOF Observez le cycle de vie du pod :</description></item><item><title>Service</title><link>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/d%C3%A9butant/services/</link><pubDate>Fri, 26 Jun 2020 15:17:20 +0200</pubDate><guid>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/d%C3%A9butant/services/</guid><description>Prérequis Minikube Install Driver none kubectl Install Stern Docs Release jq Install 3 terminal SSH Cela fait suite à la création du déploiement dans le chapitre précédent.
-Assurez-vous que vous êtes dans le bon espace de noms :
-kubectl config set-context --current --namespace=myspace Assurez-vous que vous avez le Déploiement :
-kubectl get deployments NAME READY UP-TO-DATE AVAILABLE AGEquarkus-demo-deployment 3/3 3 3 8m33s Assurez-vous que vous avez un RS :</description></item><item><title>Logs</title><link>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/d%C3%A9butant/logs/</link><pubDate>Fri, 26 Jun 2020 15:17:20 +0200</pubDate><guid>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/d%C3%A9butant/logs/</guid><description>Prérequis Minikube Install Driver none kubectl Install Stern Docs Release jq Install 3 terminal SSH Il existe plusieurs façons &amp;ldquo;prêtes à la production&amp;rdquo; de collecter et de visualiser les messages de logs dans un cluster Kubernetes. Beaucoup de gens aiment certaines fonctionnalités de ELK (ElasticSearch, Logstash, Kibana) ou EFK (ElasticSearch, FluentD, Kibana).
-L&amp;rsquo;accent est mis ici sur les éléments auxquels un développeur doit avoir accès pour l&amp;rsquo;aider à comprendre le comportement de son application s&amp;rsquo;exécutant à l&amp;rsquo;intérieur d&amp;rsquo;un pod.</description></item><item><title>Service Magic</title><link>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/d%C3%A9butant/servicemagic/</link><pubDate>Fri, 26 Jun 2020 15:17:20 +0200</pubDate><guid>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/d%C3%A9butant/servicemagic/</guid><description>Prérequis Minikube Install Driver none kubectl Install Stern Docs Release jq Install 3 terminal SSH Créer un namespace
-kubectl create namespace funstuffkubectl config set-context --current --namespace=funstuff Deployer une application mypython
-cat &amp;lt;&amp;lt;EOF | kubectl apply -f -apiVersion: apps/v1kind: Deploymentmetadata:name: mypython-deploymentspec:replicas: 1selector:matchLabels:app: mypythontemplate:metadata:labels:app: mypythonspec:containers:- name: mypythonimage: quay.io/rhdevelopers/mypython:v1ports:- containerPort: 8000EOF Deployer une application mygo</description></item><item><title>Déploiement Blue/Green</title><link>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/d%C3%A9butant/blue-green/</link><pubDate>Fri, 26 Jun 2020 15:17:20 +0200</pubDate><guid>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/d%C3%A9butant/blue-green/</guid><description>Prérequis Minikube Install Driver none kubectl Install Stern Docs Release jq Install 3 terminal SSH Créer un namespace
-kubectl create namespace myspacekubectl config set-context --current --namespace=myspace Vérifier que le namespace est vide
-kubectl get all No resources found in myspace namespace. Créer un fichier de déploiement
-mkdir -p apps/kubefiles/vi apps/kubefiles/myboot-deployment-resources-limits.yml myboot-deployment-resources-limits.yml
-apiVersion: apps/v1kind: Deploymentmetadata:labels:app: mybootname: mybootspec:replicas: 1selector:matchLabels:app: myboottemplate:metadata:labels:app: mybootspec:containers:- name: mybootimage: quay.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Débutant on Kubernetes Tutoriel</title><link>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/d%C3%A9butant/</link><description>Recent content in Débutant on Kubernetes Tutoriel</description><generator>Hugo</generator><language>fr-FR</language><lastBuildDate>Fri, 26 Jun 2020 15:17:20 +0200</lastBuildDate><atom:link href="https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/d%C3%A9butant/index.xml" rel="self" type="application/rss+xml"/><item><title>Kubectl</title><link>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/d%C3%A9butant/kubectl/</link><pubDate>Fri, 26 Jun 2020 15:17:20 +0200</pubDate><guid>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/d%C3%A9butant/kubectl/</guid><description>&lt;h2 id="prérequis">Prérequis&lt;/h2>
+&lt;ul>
+&lt;li>Une machine Linux Ubuntu ou Debian&lt;/li>
+&lt;li>8 CPU, 16GB RAM, 100GB Disk&lt;/li>
+&lt;li>Minikube &lt;a href="https://kubernetes.io/fr/docs/tasks/tools/install-minikube/#installez-minikube-par-t%C3%A9l%C3%A9chargement-direct">Install&lt;/a>&lt;/li>
+&lt;li>kubectl &lt;a href="https://kubernetes.io/fr/docs/tasks/tools/install-kubectl/">Install&lt;/a>&lt;/li>
+&lt;li>Stern &lt;a href="https://kubernetes.io/blog/2016/10/tail-kubernetes-with-stern/">Docs&lt;/a> &lt;a href="https://github.com/stern/stern/releases">Release&lt;/a>&lt;/li>
+&lt;li>jq &lt;a href="https://stedolan.github.io/jq/download/">Install&lt;/a>&lt;/li>
+&lt;li>3 terminal SSH&lt;/li>
+&lt;/ul>
+&lt;h3 id="installation-de-minikube">Installation de minikube&lt;/h3>
+&lt;h4 id="linux">Linux&lt;/h4>
+&lt;pre tabindex="0">&lt;code>mkdir bin &amp;amp;&amp;amp; cd bin
+curl -Lo minikube https://storage.googleapis.com/minikube/releases/v1.29.0/minikube-linux-amd64
+chmod +x minikube
+curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.26.1/bin/linux/amd64/kubectl
+chmod +x kubectl
+cd ..
+&lt;/code>&lt;/pre>&lt;h4 id="macos">MacOs&lt;/h4>
+&lt;pre tabindex="0">&lt;code>mkdir bin &amp;amp;&amp;amp; cd bin
+curl -Lo minikube https://storage.googleapis.com/minikube/releases/v1.29.0/minikube-darwin-amd64
+chmod +x minikube
+curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.26.1/bin/darwin/amd64/kubectl
+chmod +x kubectl
+cd ..
+&lt;/code>&lt;/pre>&lt;p>Et ajouter les variables d&amp;rsquo;environnement :&lt;/p>
+&lt;pre tabindex="0">&lt;code>export MINIKUBE_HOME=$(pwd);
+export PATH=$MINIKUBE_HOME/bin:$PATH
+export KUBECONFIG=$MINIKUBE_HOME/.kube/config
+export KUBE_EDITOR=&amp;#34;code -w&amp;#34;
+&lt;/code>&lt;/pre>&lt;p>Conserver les paramètres de Vim dans .vimrc&lt;/p></description></item><item><title>Pod, Replicaset, Deployment</title><link>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/d%C3%A9butant/pod-replica-deployment/</link><pubDate>Fri, 26 Jun 2020 15:17:20 +0200</pubDate><guid>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/d%C3%A9butant/pod-replica-deployment/</guid><description>&lt;h2 id="prérequis">Prérequis&lt;/h2>
+&lt;ul>
+&lt;li>Minikube &lt;a href="https://kubernetes.io/fr/docs/tasks/tools/install-minikube/#installez-minikube-par-t%C3%A9l%C3%A9chargement-direct">Install&lt;/a> &lt;a href="https://kubernetes.io/docs/setup/learning-environment/minikube/#specifying-the-vm-driver">Driver none&lt;/a>&lt;/li>
+&lt;li>kubectl &lt;a href="https://kubernetes.io/fr/docs/tasks/tools/install-kubectl/">Install&lt;/a>&lt;/li>
+&lt;li>Stern &lt;a href="https://kubernetes.io/blog/2016/10/tail-kubernetes-with-stern/">Docs&lt;/a> &lt;a href="https://github.com/stern/stern/releases">Release&lt;/a>&lt;/li>
+&lt;li>jq &lt;a href="https://stedolan.github.io/jq/download/">Install&lt;/a>&lt;/li>
+&lt;li>3 terminal SSH&lt;/li>
+&lt;/ul>
+&lt;p>Commencez par créer un espace de noms dans lequel vous pourrez travailler :&lt;/p>
+&lt;pre tabindex="0">&lt;code>kubectl create namespace myspace
+kubectl config set-context --current --namespace=myspace
+&lt;/code>&lt;/pre>&lt;h3 id="pod">Pod&lt;/h3>
+&lt;p>Créer un &lt;a href="https://kubernetes.io/docs/concepts/configuration/overview/#naked-pods-vs-replicasets-deployments-and-jobs">naked pod&lt;/a> :&lt;/p>
+&lt;pre tabindex="0">&lt;code>cat &amp;lt;&amp;lt;EOF | kubectl apply -f -
+apiVersion: v1
+kind: Pod
+metadata:
+ name: quarkus-demo
+spec:
+ containers:
+ - name: quarkus-demo
+ image: quay.io/rhdevelopers/quarkus-demo:v1
+EOF
+&lt;/code>&lt;/pre>&lt;p>Observez le cycle de vie du pod :&lt;/p>
+&lt;p>terminal 2 :&lt;/p>
+&lt;pre tabindex="0">&lt;code>watch kubectl get pods
+&lt;/code>&lt;/pre>&lt;pre tabindex="0">&lt;code>NAME READY STATUS RESTARTS AGE
+quarkus-demo 0/1 ContainerCreating 0 10s
+&lt;/code>&lt;/pre>&lt;p>De la création de conteneurs à l&amp;rsquo;exécution avec Ready 1/1 :&lt;/p></description></item><item><title>Service</title><link>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/d%C3%A9butant/services/</link><pubDate>Fri, 26 Jun 2020 15:17:20 +0200</pubDate><guid>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/d%C3%A9butant/services/</guid><description>&lt;h2 id="prérequis">Prérequis&lt;/h2>
+&lt;ul>
+&lt;li>Minikube &lt;a href="https://kubernetes.io/fr/docs/tasks/tools/install-minikube/#installez-minikube-par-t%C3%A9l%C3%A9chargement-direct">Install&lt;/a> &lt;a href="https://kubernetes.io/docs/setup/learning-environment/minikube/#specifying-the-vm-driver">Driver none&lt;/a>&lt;/li>
+&lt;li>kubectl &lt;a href="https://kubernetes.io/fr/docs/tasks/tools/install-kubectl/">Install&lt;/a>&lt;/li>
+&lt;li>Stern &lt;a href="https://kubernetes.io/blog/2016/10/tail-kubernetes-with-stern/">Docs&lt;/a> &lt;a href="https://github.com/stern/stern/releases">Release&lt;/a>&lt;/li>
+&lt;li>jq &lt;a href="https://stedolan.github.io/jq/download/">Install&lt;/a>&lt;/li>
+&lt;li>3 terminal SSH&lt;/li>
+&lt;/ul>
+&lt;p>Cela fait suite à la création du déploiement dans le chapitre précédent.&lt;/p>
+&lt;p>Assurez-vous que vous êtes dans le bon espace de noms :&lt;/p>
+&lt;pre tabindex="0">&lt;code>kubectl config set-context --current --namespace=myspace
+&lt;/code>&lt;/pre>&lt;p>Assurez-vous que vous avez le Déploiement :&lt;/p>
+&lt;pre tabindex="0">&lt;code>kubectl get deployments
+&lt;/code>&lt;/pre>&lt;pre tabindex="0">&lt;code>NAME READY UP-TO-DATE AVAILABLE AGE
+quarkus-demo-deployment 3/3 3 3 8m33s
+&lt;/code>&lt;/pre>&lt;p>Assurez-vous que vous avez un RS :&lt;/p>
+&lt;pre tabindex="0">&lt;code>kubectl get rs
+&lt;/code>&lt;/pre>&lt;pre tabindex="0">&lt;code>NAME DESIRED CURRENT READY AGE
+quarkus-demo-deployment-5979886fb7 3 3 3 8m56s
+&lt;/code>&lt;/pre>&lt;p>Assurez-vous d&amp;rsquo;avoir des Pods :&lt;/p></description></item><item><title>Logs</title><link>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/d%C3%A9butant/logs/</link><pubDate>Fri, 26 Jun 2020 15:17:20 +0200</pubDate><guid>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/d%C3%A9butant/logs/</guid><description>&lt;h2 id="prérequis">Prérequis&lt;/h2>
+&lt;ul>
+&lt;li>Minikube &lt;a href="https://kubernetes.io/fr/docs/tasks/tools/install-minikube/#installez-minikube-par-t%C3%A9l%C3%A9chargement-direct">Install&lt;/a> &lt;a href="https://kubernetes.io/docs/setup/learning-environment/minikube/#specifying-the-vm-driver">Driver none&lt;/a>&lt;/li>
+&lt;li>kubectl &lt;a href="https://kubernetes.io/fr/docs/tasks/tools/install-kubectl/">Install&lt;/a>&lt;/li>
+&lt;li>Stern &lt;a href="https://kubernetes.io/blog/2016/10/tail-kubernetes-with-stern/">Docs&lt;/a> &lt;a href="https://github.com/stern/stern/releases">Release&lt;/a>&lt;/li>
+&lt;li>jq &lt;a href="https://stedolan.github.io/jq/download/">Install&lt;/a>&lt;/li>
+&lt;li>3 terminal SSH&lt;/li>
+&lt;/ul>
+&lt;p>Il existe plusieurs façons &amp;ldquo;prêtes à la production&amp;rdquo; de collecter et de visualiser les messages de logs dans un cluster Kubernetes. Beaucoup de gens aiment certaines fonctionnalités de ELK (ElasticSearch, Logstash, Kibana) ou EFK (ElasticSearch, FluentD, Kibana).&lt;/p>
+&lt;p>L&amp;rsquo;accent est mis ici sur les éléments auxquels un développeur doit avoir accès pour l&amp;rsquo;aider à comprendre le comportement de son application s&amp;rsquo;exécutant à l&amp;rsquo;intérieur d&amp;rsquo;un pod.&lt;/p></description></item><item><title>Service Magic</title><link>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/d%C3%A9butant/servicemagic/</link><pubDate>Fri, 26 Jun 2020 15:17:20 +0200</pubDate><guid>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/d%C3%A9butant/servicemagic/</guid><description>&lt;h2 id="prérequis">Prérequis&lt;/h2>
+&lt;ul>
+&lt;li>Minikube &lt;a href="https://kubernetes.io/fr/docs/tasks/tools/install-minikube/#installez-minikube-par-t%C3%A9l%C3%A9chargement-direct">Install&lt;/a> &lt;a href="https://kubernetes.io/docs/setup/learning-environment/minikube/#specifying-the-vm-driver">Driver none&lt;/a>&lt;/li>
+&lt;li>kubectl &lt;a href="https://kubernetes.io/fr/docs/tasks/tools/install-kubectl/">Install&lt;/a>&lt;/li>
+&lt;li>Stern &lt;a href="https://kubernetes.io/blog/2016/10/tail-kubernetes-with-stern/">Docs&lt;/a> &lt;a href="https://github.com/stern/stern/releases">Release&lt;/a>&lt;/li>
+&lt;li>jq &lt;a href="https://stedolan.github.io/jq/download/">Install&lt;/a>&lt;/li>
+&lt;li>3 terminal SSH&lt;/li>
+&lt;/ul>
+&lt;p>Créer un namespace&lt;/p>
+&lt;pre tabindex="0">&lt;code>kubectl create namespace funstuff
+kubectl config set-context --current --namespace=funstuff
+&lt;/code>&lt;/pre>&lt;p>Deployer une application mypython&lt;/p>
+&lt;pre tabindex="0">&lt;code>cat &amp;lt;&amp;lt;EOF | kubectl apply -f -
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: mypython-deployment
+spec:
+ replicas: 1
+ selector:
+ matchLabels:
+ app: mypython
+ template:
+ metadata:
+ labels:
+ app: mypython
+ spec:
+ containers:
+ - name: mypython
+ image: quay.io/rhdevelopers/mypython:v1
+ ports:
+ - containerPort: 8000
+EOF
+&lt;/code>&lt;/pre>&lt;p>Deployer une application mygo&lt;/p>
+&lt;pre tabindex="0">&lt;code>cat &amp;lt;&amp;lt;EOF | kubectl apply -f -
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: mygo-deployment
+spec:
+ replicas: 1
+ selector:
+ matchLabels:
+ app: mygo
+ template:
+ metadata:
+ labels:
+ app: mygo
+ spec:
+ containers:
+ - name: mygo
+ image: quay.io/rhdevelopers/mygo:v1
+ ports:
+ - containerPort: 8000
+EOF
+&lt;/code>&lt;/pre>&lt;p>Deployer une application mynode&lt;/p></description></item><item><title>Déploiement Blue/Green</title><link>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/d%C3%A9butant/blue-green/</link><pubDate>Fri, 26 Jun 2020 15:17:20 +0200</pubDate><guid>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/d%C3%A9butant/blue-green/</guid><description>&lt;h2 id="prérequis">Prérequis&lt;/h2>
+&lt;ul>
+&lt;li>Minikube &lt;a href="https://kubernetes.io/fr/docs/tasks/tools/install-minikube/#installez-minikube-par-t%C3%A9l%C3%A9chargement-direct">Install&lt;/a> &lt;a href="https://kubernetes.io/docs/setup/learning-environment/minikube/#specifying-the-vm-driver">Driver none&lt;/a>&lt;/li>
+&lt;li>kubectl &lt;a href="https://kubernetes.io/fr/docs/tasks/tools/install-kubectl/">Install&lt;/a>&lt;/li>
+&lt;li>Stern &lt;a href="https://kubernetes.io/blog/2016/10/tail-kubernetes-with-stern/">Docs&lt;/a> &lt;a href="https://github.com/stern/stern/releases">Release&lt;/a>&lt;/li>
+&lt;li>jq &lt;a href="https://stedolan.github.io/jq/download/">Install&lt;/a>&lt;/li>
+&lt;li>3 terminal SSH&lt;/li>
+&lt;/ul>
+&lt;p>Créer un namespace&lt;/p>
+&lt;pre tabindex="0">&lt;code>kubectl create namespace myspace
+kubectl config set-context --current --namespace=myspace
+&lt;/code>&lt;/pre>&lt;p>Vérifier que le namespace est vide&lt;/p>
+&lt;pre tabindex="0">&lt;code>kubectl get all
+&lt;/code>&lt;/pre>&lt;pre tabindex="0">&lt;code>No resources found in myspace namespace.
+&lt;/code>&lt;/pre>&lt;p>Créer un fichier de déploiement&lt;/p>
+&lt;pre tabindex="0">&lt;code>mkdir -p apps/kubefiles/
+vi apps/kubefiles/myboot-deployment-resources-limits.yml
+&lt;/code>&lt;/pre>&lt;p>myboot-deployment-resources-limits.yml&lt;/p>
+&lt;pre tabindex="0">&lt;code>apiVersion: apps/v1
+kind: Deployment
+metadata:
+ labels:
+ app: myboot
+ name: myboot
+spec:
+ replicas: 1
+ selector:
+ matchLabels:
+ app: myboot
+ template:
+ metadata:
+ labels:
+ app: myboot
+ spec:
+ containers:
+ - name: myboot
+ image: quay.io/rhdevelopers/myboot:v1
+ ports:
+ - containerPort: 8080
+ resources:
+ requests:
+ memory: &amp;#34;300Mi&amp;#34;
+ cpu: &amp;#34;250m&amp;#34; # 1/4 core
+ # NOTE: These are the same limits we tested our Docker Container with earlier
+ # -m matches limits.memory and --cpus matches limits.cpu
+ limits:
+ memory: &amp;#34;400Mi&amp;#34;
+ cpu: &amp;#34;1000m&amp;#34; # 1 core
+&lt;/code>&lt;/pre>&lt;p>Déployer la version 1 de l&amp;rsquo;applciation myboot&lt;/p></description></item></channel></rss>

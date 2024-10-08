@@ -1,17 +1,142 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Elementaire on Kubernetes Tutoriel</title><link>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/</link><description>Recent content in Elementaire on Kubernetes Tutoriel</description><generator>Hugo</generator><language>fr-FR</language><lastBuildDate>Fri, 26 Jun 2020 15:17:20 +0200</lastBuildDate><atom:link href="https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/index.xml" rel="self" type="application/rss+xml"/><item><title>Ressources et limites</title><link>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/ressources-limites/</link><pubDate>Fri, 26 Jun 2020 15:17:20 +0200</pubDate><guid>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/ressources-limites/</guid><description>Prérequis Minikube Install Driver none kubectl Install Stern Docs Release jq Install 3 terminal SSH Assurez-vous que vous êtes dans le bon espace de noms :
-kubectl config set-context --current --namespace=myspace Assurez-vous que rien n&amp;rsquo;est en cours d&amp;rsquo;exécution dans votre espace de nom :
-kubectl get all No resources found in myspace namespace. Déployez d&amp;rsquo;abord une application sans aucune Requête ni Limite :
-Créer un fichier de déploiement
-mkdir -p apps/kubefiles/vi apps/kubefiles/myboot-deployment.</description></item><item><title>Mise à jour permanentes</title><link>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/mise-a-jour/</link><pubDate>Fri, 26 Jun 2020 15:17:20 +0200</pubDate><guid>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/mise-a-jour/</guid><description>Prérequis Minikube Install Driver none kubectl Install Stern Docs Release jq Install 3 terminal SSH Assurez-vous que vous êtes dans le bon espace de noms :
-kubectl config set-context --current --namespace=myspace Déployez l&amp;rsquo;application Spring Boot si nécessaire :
-kubectl apply -f apps/kubefiles/myboot-deployment-resources-limits.ymlkubectl apply -f apps/kubefiles/myboot-service.yml Terminal 1 : regardez les Pods.
-watch kubectl get pods Terminal 2: curl loop the service.
-IP=$(minikube ip -p devnation)PORT=$(kubectl get service/myboot -o jsonpath=&amp;#34;{.</description></item><item><title>Liveness &amp; Readiness</title><link>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/liveness-readiness/</link><pubDate>Fri, 26 Jun 2020 15:17:20 +0200</pubDate><guid>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/liveness-readiness/</guid><description>Prérequis Minikube Install Driver none kubectl Install Stern Docs Release jq Install 3 terminal SSH Assurez-vous que vous êtes dans le bon espace de noms :
-kubectl config set-context --current --namespace=myspace Assurez-vous que rien d&amp;rsquo;autre n&amp;rsquo;est déployé :
-kubectl get all No resources found in myspace namespace. Déployez une application avec le jeu de sondes Live and Ready :
-cat &amp;lt;&amp;lt;EOF | kubectl apply -f -apiVersion: apps/v1kind: Deploymentmetadata:name: mybootspec:replicas: 3selector:matchLabels:app: myboottemplate:metadata:labels:app: mybootenv: devspec:containers:- name: mybootimage: quay.</description></item><item><title>Configmap</title><link>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/configmap/</link><pubDate>Fri, 26 Jun 2020 15:17:20 +0200</pubDate><guid>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/configmap/</guid><description>Prérequis Minikube Install Driver none kubectl Install Stern Docs Release jq Install 3 terminal SSH ConfigMap est la ressource Kubernetes qui vous permet d&amp;rsquo;externaliser la configuration de votre application.
-La configuration d&amp;rsquo;une application est tout ce qui est susceptible de varier entre les déploiements (staging, production, environnements de développement, etc).
-The Twelve-Factor App
-Variables d&amp;rsquo;environnement
-MyRESTController.java comprend un petit morceau de code qui s&amp;rsquo;adresse à l&amp;rsquo;environnement :
-@RequestMapping(&amp;#34;/configure&amp;#34;)public String configure() {String databaseConn = environment.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Elementaire on Kubernetes Tutoriel</title><link>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/</link><description>Recent content in Elementaire on Kubernetes Tutoriel</description><generator>Hugo</generator><language>fr-FR</language><lastBuildDate>Fri, 26 Jun 2020 15:17:20 +0200</lastBuildDate><atom:link href="https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/index.xml" rel="self" type="application/rss+xml"/><item><title>Ressources et limites</title><link>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/ressources-limites/</link><pubDate>Fri, 26 Jun 2020 15:17:20 +0200</pubDate><guid>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/ressources-limites/</guid><description>&lt;h2 id="prérequis">Prérequis&lt;/h2>
+&lt;ul>
+&lt;li>Minikube &lt;a href="https://kubernetes.io/fr/docs/tasks/tools/install-minikube/#installez-minikube-par-t%C3%A9l%C3%A9chargement-direct">Install&lt;/a> &lt;a href="https://kubernetes.io/docs/setup/learning-environment/minikube/#specifying-the-vm-driver">Driver none&lt;/a>&lt;/li>
+&lt;li>kubectl &lt;a href="https://kubernetes.io/fr/docs/tasks/tools/install-kubectl/">Install&lt;/a>&lt;/li>
+&lt;li>Stern &lt;a href="https://kubernetes.io/blog/2016/10/tail-kubernetes-with-stern/">Docs&lt;/a> &lt;a href="https://github.com/stern/stern/releases">Release&lt;/a>&lt;/li>
+&lt;li>jq &lt;a href="https://stedolan.github.io/jq/download/">Install&lt;/a>&lt;/li>
+&lt;li>3 terminal SSH&lt;/li>
+&lt;/ul>
+&lt;p>Assurez-vous que vous êtes dans le bon espace de noms :&lt;/p>
+&lt;pre tabindex="0">&lt;code>kubectl config set-context --current --namespace=myspace
+&lt;/code>&lt;/pre>&lt;p>Assurez-vous que rien n&amp;rsquo;est en cours d&amp;rsquo;exécution dans votre espace de nom :&lt;/p>
+&lt;pre tabindex="0">&lt;code>kubectl get all
+&lt;/code>&lt;/pre>&lt;pre tabindex="0">&lt;code>No resources found in myspace namespace.
+&lt;/code>&lt;/pre>&lt;p>Déployez d&amp;rsquo;abord une application sans aucune Requête ni Limite :&lt;/p>
+&lt;p>Créer un fichier de déploiement&lt;/p>
+&lt;pre tabindex="0">&lt;code>mkdir -p apps/kubefiles/
+vi apps/kubefiles/myboot-deployment.yml
+&lt;/code>&lt;/pre>&lt;p>myboot-deployment.yml&lt;/p>
+&lt;pre tabindex="0">&lt;code>apiVersion: apps/v1
+kind: Deployment
+metadata:
+ labels:
+ app: myboot
+ name: myboot
+spec:
+ replicas: 1
+ selector:
+ matchLabels:
+ app: myboot
+ template:
+ metadata:
+ labels:
+ app: myboot
+ spec:
+ containers:
+ - name: myboot
+ image: quay.io/rhdevelopers/myboot:v2
+ ports:
+ - containerPort: 8080
+&lt;/code>&lt;/pre>&lt;p>Déployer la version 1 de l&amp;rsquo;applciation myboot&lt;/p></description></item><item><title>Mise à jour permanentes</title><link>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/mise-a-jour/</link><pubDate>Fri, 26 Jun 2020 15:17:20 +0200</pubDate><guid>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/mise-a-jour/</guid><description>&lt;h2 id="prérequis">Prérequis&lt;/h2>
+&lt;ul>
+&lt;li>Minikube &lt;a href="https://kubernetes.io/fr/docs/tasks/tools/install-minikube/#installez-minikube-par-t%C3%A9l%C3%A9chargement-direct">Install&lt;/a> &lt;a href="https://kubernetes.io/docs/setup/learning-environment/minikube/#specifying-the-vm-driver">Driver none&lt;/a>&lt;/li>
+&lt;li>kubectl &lt;a href="https://kubernetes.io/fr/docs/tasks/tools/install-kubectl/">Install&lt;/a>&lt;/li>
+&lt;li>Stern &lt;a href="https://kubernetes.io/blog/2016/10/tail-kubernetes-with-stern/">Docs&lt;/a> &lt;a href="https://github.com/stern/stern/releases">Release&lt;/a>&lt;/li>
+&lt;li>jq &lt;a href="https://stedolan.github.io/jq/download/">Install&lt;/a>&lt;/li>
+&lt;li>3 terminal SSH&lt;/li>
+&lt;/ul>
+&lt;p>Assurez-vous que vous êtes dans le bon espace de noms :&lt;/p>
+&lt;pre tabindex="0">&lt;code>kubectl config set-context --current --namespace=myspace
+&lt;/code>&lt;/pre>&lt;p>Déployez l&amp;rsquo;application Spring Boot si nécessaire :&lt;/p>
+&lt;pre tabindex="0">&lt;code>kubectl apply -f apps/kubefiles/myboot-deployment-resources-limits.yml
+kubectl apply -f apps/kubefiles/myboot-service.yml
+&lt;/code>&lt;/pre>&lt;p>Terminal 1 : regardez les Pods.&lt;/p>
+&lt;pre tabindex="0">&lt;code>watch kubectl get pods
+&lt;/code>&lt;/pre>&lt;p>Terminal 2: curl loop the service.&lt;/p>
+&lt;pre tabindex="0">&lt;code>IP=$(minikube ip -p devnation)
+PORT=$(kubectl get service/myboot -o jsonpath=&amp;#34;{.spec.ports[*].nodePort}&amp;#34;)
+&lt;/code>&lt;/pre>&lt;p>Réaliser une requete sur le service :&lt;/p>
+&lt;pre tabindex="0">&lt;code>curl $IP:$PORT
+&lt;/code>&lt;/pre>&lt;p>Et lancez le script de la boucle :&lt;/p></description></item><item><title>Liveness &amp; Readiness</title><link>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/liveness-readiness/</link><pubDate>Fri, 26 Jun 2020 15:17:20 +0200</pubDate><guid>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/liveness-readiness/</guid><description>&lt;h2 id="prérequis">Prérequis&lt;/h2>
+&lt;ul>
+&lt;li>Minikube &lt;a href="https://kubernetes.io/fr/docs/tasks/tools/install-minikube/#installez-minikube-par-t%C3%A9l%C3%A9chargement-direct">Install&lt;/a> &lt;a href="https://kubernetes.io/docs/setup/learning-environment/minikube/#specifying-the-vm-driver">Driver none&lt;/a>&lt;/li>
+&lt;li>kubectl &lt;a href="https://kubernetes.io/fr/docs/tasks/tools/install-kubectl/">Install&lt;/a>&lt;/li>
+&lt;li>Stern &lt;a href="https://kubernetes.io/blog/2016/10/tail-kubernetes-with-stern/">Docs&lt;/a> &lt;a href="https://github.com/stern/stern/releases">Release&lt;/a>&lt;/li>
+&lt;li>jq &lt;a href="https://stedolan.github.io/jq/download/">Install&lt;/a>&lt;/li>
+&lt;li>3 terminal SSH&lt;/li>
+&lt;/ul>
+&lt;p>Assurez-vous que vous êtes dans le bon espace de noms :&lt;/p>
+&lt;pre tabindex="0">&lt;code>kubectl config set-context --current --namespace=myspace
+&lt;/code>&lt;/pre>&lt;p>Assurez-vous que rien d&amp;rsquo;autre n&amp;rsquo;est déployé :&lt;/p>
+&lt;pre tabindex="0">&lt;code>kubectl get all
+&lt;/code>&lt;/pre>&lt;pre tabindex="0">&lt;code>No resources found in myspace namespace.
+&lt;/code>&lt;/pre>&lt;p>Déployez une application avec le jeu de sondes Live and Ready :&lt;/p>
+&lt;pre tabindex="0">&lt;code>cat &amp;lt;&amp;lt;EOF | kubectl apply -f -
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: myboot
+spec:
+ replicas: 3
+ selector:
+ matchLabels:
+ app: myboot
+ template:
+ metadata:
+ labels:
+ app: myboot
+ env: dev
+ spec:
+ containers:
+ - name: myboot
+ image: quay.io/rhdevelopers/myboot:v1
+ imagePullPolicy: Always
+ ports:
+ - containerPort: 8080
+ resources:
+ requests:
+ memory: &amp;#34;300Mi&amp;#34;
+ cpu: &amp;#34;250m&amp;#34; # 1/4 core
+ limits:
+ memory: &amp;#34;400Mi&amp;#34;
+ cpu: &amp;#34;1000m&amp;#34; # 1 core
+ livenessProbe:
+ httpGet:
+ port: 8080
+ path: /
+ initialDelaySeconds: 10
+ periodSeconds: 5
+ timeoutSeconds: 2
+ readinessProbe:
+ httpGet:
+ path: /health
+ port: 8080
+ initialDelaySeconds: 10
+ periodSeconds: 3
+EOF
+&lt;/code>&lt;/pre>&lt;p>Décrivez le déploiement :&lt;/p></description></item><item><title>Configmap</title><link>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/configmap/</link><pubDate>Fri, 26 Jun 2020 15:17:20 +0200</pubDate><guid>https://maxime-cls.github.io/kubernetes-tutorial/kubernetes/%C3%A9l%C3%A9mentaire/configmap/</guid><description>&lt;h2 id="prérequis">Prérequis&lt;/h2>
+&lt;ul>
+&lt;li>Minikube &lt;a href="https://kubernetes.io/fr/docs/tasks/tools/install-minikube/#installez-minikube-par-t%C3%A9l%C3%A9chargement-direct">Install&lt;/a> &lt;a href="https://kubernetes.io/docs/setup/learning-environment/minikube/#specifying-the-vm-driver">Driver none&lt;/a>&lt;/li>
+&lt;li>kubectl &lt;a href="https://kubernetes.io/fr/docs/tasks/tools/install-kubectl/">Install&lt;/a>&lt;/li>
+&lt;li>Stern &lt;a href="https://kubernetes.io/blog/2016/10/tail-kubernetes-with-stern/">Docs&lt;/a> &lt;a href="https://github.com/stern/stern/releases">Release&lt;/a>&lt;/li>
+&lt;li>jq &lt;a href="https://stedolan.github.io/jq/download/">Install&lt;/a>&lt;/li>
+&lt;li>3 terminal SSH&lt;/li>
+&lt;/ul>
+&lt;p>ConfigMap est la ressource Kubernetes qui vous permet d&amp;rsquo;externaliser la configuration de votre application.&lt;/p>
+&lt;p>La configuration d&amp;rsquo;une application est tout ce qui est susceptible de varier entre les déploiements (staging, production, environnements de développement, etc).&lt;/p>
+&lt;p>&lt;a href="https://12factor.net/config">The Twelve-Factor App&lt;/a>&lt;/p>
+&lt;p>Variables d&amp;rsquo;environnement&lt;/p>
+&lt;p>MyRESTController.java comprend un petit morceau de code qui s&amp;rsquo;adresse à l&amp;rsquo;environnement :&lt;/p>
+&lt;pre tabindex="0">&lt;code>@RequestMapping(&amp;#34;/configure&amp;#34;)
+ public String configure() {
+ String databaseConn = environment.getProperty(&amp;#34;DBCONN&amp;#34;,&amp;#34;Default&amp;#34;);
+ String msgBroker = environment.getProperty(&amp;#34;MSGBROKER&amp;#34;,&amp;#34;Default&amp;#34;);
+ String hello = environment.getProperty(&amp;#34;GREETING&amp;#34;,&amp;#34;Default&amp;#34;);
+ String love = environment.getProperty(&amp;#34;LOVE&amp;#34;,&amp;#34;Default&amp;#34;);
+ return &amp;#34;Configuration: \n&amp;#34;
+ + &amp;#34;databaseConn=&amp;#34; + databaseConn + &amp;#34;\n&amp;#34;
+ + &amp;#34;msgBroker=&amp;#34; + msgBroker + &amp;#34;\n&amp;#34;
+ + &amp;#34;hello=&amp;#34; + hello + &amp;#34;\n&amp;#34;
+ + &amp;#34;love=&amp;#34; + love + &amp;#34;\n&amp;#34;;
+ }
+&lt;/code>&lt;/pre>&lt;p>Les variables d&amp;rsquo;environnement peuvent être manipulées au niveau du déploiement. Les modifications entraînent le redéploiement du Pod.&lt;/p></description></item></channel></rss>
