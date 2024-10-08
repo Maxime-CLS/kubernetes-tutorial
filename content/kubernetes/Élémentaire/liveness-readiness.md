@@ -60,7 +60,7 @@ spec:
             memory: "300Mi"
             cpu: "250m" # 1/4 core
           limits:
-            memory: "400Mi"
+            memory: "800Mi"
             cpu: "1000m" # 1 core
         livenessProbe:
           httpGet:
