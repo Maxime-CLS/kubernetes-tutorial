@@ -36,7 +36,7 @@ watch kubectl get pods
 Terminal 2: curl loop the service.
 
 ```
-IP=$(minikube ip -p devnation)
+IP=$(minikube ip)
 PORT=$(kubectl get service/myboot -o jsonpath="{.spec.ports[*].nodePort}")
 ```
 
