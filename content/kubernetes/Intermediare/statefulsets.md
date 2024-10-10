@@ -38,14 +38,17 @@ vim  apps/kubefiles/quarkus-statefulset.yaml
 ```
 
 ```
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: quarkus-statefulset
   labels:
     app: quarkus-statefulset
 spec:
-  serviceName: "quarkus" (1)
+  selector:
+    matchLabels:
+      app: quarkus-statefulset
+  serviceName: "quarkus"
   replicas: 2
   template:
     metadata:
