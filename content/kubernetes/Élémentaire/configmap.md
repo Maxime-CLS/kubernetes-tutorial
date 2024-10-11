@@ -210,6 +210,18 @@ greeting=Default
 love=Default
 ```
 
+Créer le fichier some.properties
+
+```
+mkdir -p apps/config
+vi apps/config/some.properties
+```
+
+```
+GREETING=jambo
+LOVE=Amour
+```
+
 Créer un ConfigMap
 
 ```
@@ -317,6 +329,17 @@ databaseConn=Default
 msgBroker=Default
 greeting=jambo
 love=Amour
+```
+
+Créer le fichier other.properties
+
+```
+vi apps/config/other.properties
+```
+
+```
+DBCONN=jdbc:sqlserver://123.123.123.123:1443;user=MyUserName;password=*****;
+MSGBROKER=tcp://localhost:61616?jms.useAsyncSend=true
 ```
 
 Et passez à l'autre fichier de propriétés en recréant le ConfigMap :
