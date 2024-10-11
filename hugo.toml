@@ -1,5 +1,5 @@
 baseURL = "https://maxime-cls.github.io/kubernetes-tutorial/"
-title = "ArgoCD Tutoriel"
+title = "Kubernetes Tutoriel"
 theme = "hugo-theme-relearn"
 languageCode = "fr-FR"
 languageName = "Français"
