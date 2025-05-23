@@ -248,6 +248,8 @@ Supersonic Subatomic Java with Quarkus quarkus-demo-deployment-5979886fb7-c888m:
 
 ### A vous de jouez !
 
+#### Défi 1 : 
+
 Créer un pod avec des Resource Requests et Limits
 
 Créer un namespace de noms limit.  
@@ -260,3 +262,121 @@ Il doit demander 30m de CPU et être limité à 300m de CPU.
 
 Il doit demander 30Mi de mémoire et être limité à 30Mi de mémoire.
 
+
+#### Défi 2 :
+
+Déployez cette application :
+
+```
+vi deployement-fix.yaml
+```
+
+```
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    app.quarkus.io/commit-id: 91d4fef5457795ed2a1a38daeeaee4837254b390
+    app.quarkus.io/build-timestamp: 2022-05-30 - 12:42:01 +0000
+  labels:
+    app.kubernetes.io/name: hello-fix
+    app.kubernetes.io/version: 2.0.0
+  name: hello-fix
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 9090
+  selector:
+    app.kubernetes.io/name: hello-fix
+    app.kubernetes.io/version: 2.0.0
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    app.quarkus.io/commit-id: 91d4fef5457795ed2a1a38daeeaee4837254b390
+    app.quarkus.io/build-timestamp: 2022-05-30 - 12:42:01 +0000
+  labels:
+    app.kubernetes.io/version: 2.0.0
+    app.kubernetes.io/name: hello-fix
+  name: hello-fix
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/version: 2.0.0
+      app.kubernetes.io/name: hello-fix
+  template:
+    metadata:
+      annotations:
+        app.quarkus.io/commit-id: 91d4fef5457795ed2a1a38daeeaee4837254b390
+        app.quarkus.io/build-timestamp: 2022-05-30 - 12:42:01 +0000
+      labels:
+        app.kubernetes.io/version: 2.0.0
+        app.kubernetes.io/name: hello-fix
+    spec:
+      containers:
+        - env:
+            - name: KUBERNETES_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          image: quay.io/rhdevelopers/hello-fix:2.0.0
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /q/health/live
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 0
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 10
+          name: hello-fix
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /q/health/ready
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 0
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 10
+      serviceAccountName: hello-fix
+```
+
+
+```
+kubectl apply -f deployement-fix.yaml
+```
+
+Lancez maintenant une commande pour vérifier l'état des pods :
+
+```
+kubectl get pods 
+```
+
+Le résultat devrait être similaire à :
+
+```
+No resources found in default namespace.
+```
+
+Vous devez trouver pourquoi il échoue et corriger le déploiement pour être en état READY et obtenir le résultat suivant : 
+
+```
+NAME                        READY   STATUS    RESTARTS   AGE
+hello-fix-8787bd4fc-lfqj7   1/1     Running   0          17s
+```
+
+> [!INFO]
+> Pensez a supprimer le déploiement avant d'appliquer de nouvelle modification avec la commande kubectl delete -f deployement-fix.yaml

@@ -450,6 +450,8 @@ kubectl delete deployment myboot
 
 ### A vous de jouez !
 
+#### Défi 1
+
 Créer un déploiement avec une ReadinessProbe
 
 Créez un déploiement nommé space-alien-welcome-message-generator d'image httpd:alpine avec 1 replica.
@@ -459,4 +461,125 @@ Il devrait avoir un ReadinessProbe qui exécute la commande stat /tmp/ready. Cel
 Les valeurs initialDelaySeconds et periodSeconds doivent être respectivement de 10 et 5.
 
 Créez le déploiement et observez que le module n'est pas prêt.
+
+Vous devez rendre l'état du déploiement à READY. 
+
+
+#### Défi 2 : 
+
+Lorsqu'un conteneur ne peut pas démarrer, Kubernetes indique qu'il a une erreur CrashLoopBackOff. CrashLoopBackOff est une erreur d'exécution et indique que quelque chose ne va pas avec le conteneur avant même qu'il ne démarre.
+
+Déployez cette application :
+
+```
+vi hello-fix.yaml
+```
+
+```
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    app.quarkus.io/commit-id: 91d4fef5457795ed2a1a38daeeaee4837254b390
+    app.quarkus.io/build-timestamp: 2022-05-27 - 12:35:51 +0000
+  labels:
+    app.kubernetes.io/name: hello-fix
+    app.kubernetes.io/version: 1.0.0
+  name: hello-fix
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+  selector:
+    app.kubernetes.io/name: hello-fix
+    app.kubernetes.io/version: 1.0.0
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    app.quarkus.io/commit-id: 91d4fef5457795ed2a1a38daeeaee4837254b390
+    app.quarkus.io/build-timestamp: 2022-05-27 - 12:35:51 +0000
+  labels:
+    app.kubernetes.io/version: 1.0.0
+    app.kubernetes.io/name: hello-fix
+  name: hello-fix
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/version: 1.0.0
+      app.kubernetes.io/name: hello-fix
+  template:
+    metadata:
+      annotations:
+        app.quarkus.io/commit-id: 91d4fef5457795ed2a1a38daeeaee4837254b390
+        app.quarkus.io/build-timestamp: 2022-05-27 - 12:35:51 +0000
+      labels:
+        app.kubernetes.io/version: 1.0.0
+        app.kubernetes.io/name: hello-fix
+    spec:
+      containers:
+        - env:
+            - name: KUBERNETES_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          image: quay.io/rhdevelopers/hello-fix:1.0.0
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /q/health/liv
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 0
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 10
+          name: hello-fix
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+```
+
+```
+kubectl apply -f hello-fix.yaml
+```
+
+Lancez maintenant une commande pour vérifier l'état des pods :
+
+```
+kubectl get pods 
+```
+
+Le résultat devrait être similaire à :
+
+```
+NAME                         READY   STATUS      RESTARTS   AGE
+hello-fix-5945856c46-rjfj7   1/1     Running     0          20s
+```
+
+Si vous réessayez la même commande, vous obtiendrez un résultat similaire à celui-ci :
+
+```
+NAME                         READY   STATUS      RESTARTS     AGE
+hello-fix-5945856c46-rjfj7   1/1     Running     1 (3s ago)   23s
+```
+
+Si vous vérifiez à nouveau l'état des pods, vous constaterez que d'autres redémarrages ont eu lieu :
+
+
+```
+NAME                         READY   STATUS             RESTARTS     AGE
+hello-fix-6b889b5d97-psxdl   0/1     CrashLoopBackOff   5 (1s ago)   2m37s
+```
+
+Et l'erreur CrashLoopBackOff est affichée.
+
+Vous devez trouver pourquoi il échoue et corriger le déploiement pour être en état READY.
 

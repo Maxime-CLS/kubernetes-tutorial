@@ -223,3 +223,106 @@ Supprimer vos ressources
 kubectl delete deployment myboot
 kubectl delete service myboot
 ```
+
+
+### A vous de jouez !
+
+CreateContainerConfigError est une erreur d'exécution qui apparaît lorsque le conteneur est incapable de démarrer, avant même que l'application à l'intérieur du conteneur ne démarre.
+
+Déployez cette application :
+
+```
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    app.quarkus.io/commit-id: 91d4fef5457795ed2a1a38daeeaee4837254b390
+    app.quarkus.io/build-timestamp: 2022-05-27 - 12:35:51 +0000
+  labels:
+    app.kubernetes.io/name: hello-fix
+    app.kubernetes.io/version: 1.0.0
+  name: hello-fix
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+  selector:
+    app.kubernetes.io/name: hello-fix
+    app.kubernetes.io/version: 1.0.0
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    app.quarkus.io/commit-id: 91d4fef5457795ed2a1a38daeeaee4837254b390
+    app.quarkus.io/build-timestamp: 2022-05-27 - 12:35:51 +0000
+  labels:
+    app.kubernetes.io/version: 1.0.0
+    app.kubernetes.io/name: hello-fix
+  name: hello-fix
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/version: 1.0.0
+      app.kubernetes.io/name: hello-fix
+  template:
+    metadata:
+      annotations:
+        app.quarkus.io/commit-id: 91d4fef5457795ed2a1a38daeeaee4837254b390
+        app.quarkus.io/build-timestamp: 2022-05-27 - 12:35:51 +0000
+      labels:
+        app.kubernetes.io/version: 1.0.0
+        app.kubernetes.io/name: hello-fix
+    spec:
+      containers:
+        - env:
+            - name: KUBERNETES_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          envFrom:
+            - secretRef:
+                name: maria
+          image: quay.io/rhdevelopers/hello-fix:1.0.0
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /q/health/live
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 0
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 10
+          name: hello-fix
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mariadb
+type: Opaque
+```
+
+Une fois déployé, veuillez vérifier l'état du pod en utilisant la commande :
+
+```
+kubectl get pods
+```
+
+Le résultat serait similaire à :
+
+```
+NAME                         READY   STATUS                       RESTARTS   AGE
+hello-fix-7c5fffc8c8-j2h8g   0/1     CreateContainerConfigError   0          20s
+```
+
+Vous devez trouver pourquoi il échoue et corriger le déploiement pour être en état READY.

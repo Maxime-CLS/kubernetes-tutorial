@@ -16,7 +16,7 @@ helm version
 ```
 
 > [!INFO]
-> Ce tutoriel a été testé avec succès en utilisant une Helmversion supérieure à 3.7.0.
+> Ce tutoriel a été testé avec succès en utilisant une Helm version supérieure à 3.7.0.
 
 ### Notions de base et principes fondamentaux
 

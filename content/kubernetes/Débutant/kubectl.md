@@ -32,9 +32,9 @@ cd ..
 
 ```
 mkdir bin && cd bin
-curl -Lo minikube https://storage.googleapis.com/minikube/releases/v1.29.0/minikube-darwin-amd64
+curl -Lo minikube https://github.com/kubernetes/minikube/releases/latest/download/minikube-darwin-arm64
 chmod +x minikube
-curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.26.1/bin/darwin/amd64/kubectl
+curl -LO https://dl.k8s.io/release/v1.26.1/bin/darwin/arm64/kubectl
 chmod +x kubectl
 cd ..
 ```
@@ -413,3 +413,15 @@ Supersonic Subatomic Java with Quarkus myapp-5dcbf46dfc-tcfwp:6
 kubectl delete namespace mystuff
 kubectl config set-context --current --namespace=default
 ```
+
+
+### A vous de jouez !
+
+Créer un namespace de nom starting.  
+
+Dans le namespace, créez un deploiement nommée my-dep en ligne de commande (kubectl) avec :
+ - Une image httpd:alpine
+ - 2 replicas
+ - Port 8080
+
+ Réaliser un downscale du déploiement à 1.
