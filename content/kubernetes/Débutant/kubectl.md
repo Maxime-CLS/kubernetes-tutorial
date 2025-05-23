@@ -32,7 +32,7 @@ cd ..
 
 ```
 mkdir bin && cd bin
-curl -Lo minikube https://github.com/kubernetes/minikube/releases/latest/download/minikube-darwin-arm64
+curl -Lo minikube https://github.com/kubernetes/minikube/releases/v1.29.0/download/minikube-darwin-arm64
 chmod +x minikube
 curl -LO https://dl.k8s.io/release/v1.26.1/bin/darwin/arm64/kubectl
 chmod +x kubectl
