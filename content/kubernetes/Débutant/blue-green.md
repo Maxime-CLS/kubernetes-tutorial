@@ -73,7 +73,7 @@ spec:
           # NOTE: These are the same limits we tested our Docker Container with earlier
           # -m matches limits.memory and --cpus matches limits.cpu
           limits:
-            memory: "400Mi"
+            memory: "900Mi"
             cpu: "1000m" # 1 core
 ```
 
@@ -127,25 +127,26 @@ Déployer le service
 kubectl apply -f apps/kubefiles/myboot-service.yml
 ```
 
-Créer les variables d'environnement IP et Port
 
 ```
-IP=$(minikube ip)
-PORT=$(kubectl get service/myboot -o jsonpath="{.spec.ports[*].nodePort}")
+minikube service myapp --url -n mystuff
 ```
 
-
-Réaliser une requete du service
-
 ```
-curl $IP:$PORT
+http://127.0.0.1:54134
 ```
 
-Et maintenant créer une boucle de requete
+terminal 1 
+
+```
+URL=http://127.0.0.1:54134
+```
+
+Sondez le résultat :
 
 ```
 while true
-do curl $IP:$PORT
+do curl $URL
 sleep .3
 done
 ```
