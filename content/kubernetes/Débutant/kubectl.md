@@ -159,7 +159,7 @@ minikube addons enable dashboard
 minikube dashboard 
 ```
 
-![image.png](/elastic-tutorial/images/attachments/debutant/kubectl/kubernetes-dashboard.png)
+![image.png](/kubernetes-tutorial/images/attachments/debutant/kubectl/kubernetes-dashboard.png)
 
 
 ### API avec "kubectl proxy"
