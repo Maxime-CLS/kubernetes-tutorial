@@ -139,6 +139,86 @@ ingress-nginx-admission-patch-rqp78         0/1     Completed   1          11m
 ingress-nginx-controller-59b45fb494-26npt   1/1     Running     0          11m
 ```
 
+### Installation de Kubernetes Dashboard
+
+Le tableau de bord Kubernetes fournit une interface utilisateur web pour la gestion du cluster Kubernetes. Minikube installe le tableau de bord en tant qu'extension, mais il est désactivé par défaut. Avant d'utiliser le tableau de bord, nous devons activer l'extension Dashboard, ainsi que l'extension metrics-server, une extension d'assistance conçue pour collecter les métriques d'utilisation du cluster Kubernetes. Pour accéder au tableau de bord depuis Minikube, nous pouvons utiliser la  commande minikube dashboard , qui ouvre un nouvel onglet dans notre navigateur web affichant le tableau de bord Kubernetes, mais seulement après avoir listé, activé et vérifié les extensions requises :
+
+```
+minikube addons list
+```
+
+```
+minikube addons enable metrics-server
+```
+
+```
+minikube addons enable dashboard
+```
+
+```
+minikube dashboard 
+```
+
+![image.png](/elastic-tutorial/images/attachments/debutant/kubectl/kubernetes-dashboard.png)
+
+
+### API avec "kubectl proxy"
+
+En émettant la commande proxy kubectl , kubectl s'authentifie auprès du serveur API sur le nœud du plan de contrôle et rend les services disponibles sur le port proxy par défaut 8001 .
+
+Tout d’abord, nous exécutons la commande kubectl proxy :
+
+```
+kubectl proxy
+```
+
+Début de diffusion sur 127.0.0.1:8001
+
+Il verrouille le terminal tant que le proxy est en cours d'exécution, à moins que nous ne l'exécutions en arrière-plan (avec kubectl proxy & ).
+
+Lorsque le proxy kubectl est en cours d'exécution, nous pouvons envoyer des requêtes à l'API via l' hôte local sur le port proxy par défaut 8001 (à partir d'un autre terminal, puisque le proxy verrouille le premier terminal lorsqu'il s'exécute au premier plan) :
+
+```
+curl http://localhost:8001/
+```
+
+```
+{
+ "chemins": [
+   "/api",
+   "/api/v1",
+   "/apis",
+   "/apis/apps",
+   ......
+   ......
+   "/logs",
+   "/metrics",
+   "/openapi/v2",
+   "/version"
+ ]
+}
+```
+
+Avec la requête curl ci-dessus , nous avons demandé tous les points de terminaison de l'API au serveur d'API. En cliquant sur le lien ci-dessus (dans la commande curl ), la même liste s'ouvrira dans un onglet de navigateur.
+
+Nous pouvons explorer plusieurs combinaisons de chemins avec curl  ou dans un navigateur également, telles que :
+
+```
+http://localhost:8001/api/v1
+```
+
+```
+http://localhost:8001/apis/apps/v1
+```
+
+```
+http://localhost:8001/healthz
+```
+
+```
+http://localhost:8001/metrics
+```
+
 ### Parlez à votre Cluster
 
 ```
